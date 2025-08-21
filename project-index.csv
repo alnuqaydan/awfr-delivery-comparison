@@ -1,0 +1,38 @@
+File Path,Description,Type,Language,Status
+src/app/page.tsx,الصفحة الرئيسية مع رابط مطاعم المملكة,Page,TypeScript,Active
+src/app/ksa-restaurants/page.tsx,صفحة مطاعم المملكة العربية السعودية,Page,TypeScript,Active
+src/app/restaurant/[id]/page.tsx,صفحة تفاصيل المطعم,Page,TypeScript,Active
+src/app/cart/page.tsx,صفحة سلة التسوق,Page,TypeScript,Active
+src/app/checkout/page.tsx,صفحة إتمام الطلب,Page,TypeScript,Active
+src/app/delivery-comparison/page.tsx,صفحة مقارنة التوصيل,Page,TypeScript,Active
+src/app/order-success/page.tsx,صفحة نجاح الطلب,Page,TypeScript,Active
+src/services/ksaRestaurantService.ts,خدمة مطاعم المملكة العربية السعودية,Service,TypeScript,Active
+src/data/restaurants.ts,بيانات المطاعم المحلية,Data,TypeScript,Active
+src/components/Header.tsx,مكون رأس الصفحة,Component,TypeScript,Active
+src/components/Footer.tsx,مكون تذييل الصفحة,Component,TypeScript,Active
+src/components/RestaurantCard.tsx,بطاقة عرض المطعم,Component,TypeScript,Active
+src/components/ProviderCard.tsx,بطاقة شركة التوصيل,Component,TypeScript,Active
+src/components/HeroSection.tsx,قسم البطل الرئيسي,Component,TypeScript,Active
+src/components/Providers.tsx,مكون شركات التوصيل,Component,TypeScript,Active
+src/store/index.ts,إعداد متجر Redux,Store,TypeScript,Active
+src/store/restaurantSlice.ts,حالة المطاعم,Store,TypeScript,Active
+src/store/cartSlice.ts,حالة سلة التسوق,Store,TypeScript,Active
+src/store/pricingSlice.ts,حالة الأسعار,Store,TypeScript,Active
+src/store/settingsSlice.ts,حالة الإعدادات,Store,TypeScript,Active
+src/types/index.ts,تعريفات TypeScript,Types,TypeScript,Active
+src/hooks/index.ts,استيراد Hooks,Utils,TypeScript,Active
+src/hooks/useAppDispatch.ts,Hook للـ Dispatch,Utils,TypeScript,Active
+src/hooks/useAppSelector.ts,Hook للـ Selector,Utils,TypeScript,Active
+src/utils/pricing.ts,حساب الأسعار,Utils,TypeScript,Active
+src/lib/theme.ts,إعدادات الثيم,Config,TypeScript,Active
+src/lib/i18n.ts,إعدادات الترجمة,Config,TypeScript,Active
+package.json,ملف التبعيات,Config,JSON,Active
+tsconfig.json,إعدادات TypeScript,Config,JSON,Active
+tailwind.config.js,إعدادات Tailwind CSS,Config,JavaScript,Active
+next.config.js,إعدادات Next.js,Config,JavaScript,Active
+README.md,دليل المشروع,Documentation,Markdown,Active
+tests/e2e/home.spec.ts,اختبار الصفحة الرئيسية,Test,TypeScript,Active
+src/components/__tests__/ProviderCard.test.tsx,اختبار بطاقة التوصيل,Test,TypeScript,Active
+jest.config.cjs,إعدادات Jest,Config,JavaScript,Active
+playwright.config.ts,إعدادات Playwright,Config,TypeScript,Active
+vitest.config.ts,إعدادات Vitest,Config,TypeScript,Active
