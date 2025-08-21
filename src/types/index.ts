@@ -1,3 +1,4 @@
+// Delivery Provider Types
 export interface Provider {
   id: string;
   name: string;
@@ -28,10 +29,177 @@ export interface EstimateEntity {
   deepLinkUrl?: string;
 }
 
+// Restaurant Types
+export interface Restaurant {
+  id: string;
+  name: string;
+  nameAr: string;
+  description: string;
+  descriptionAr: string;
+  logo: string;
+  banner: string;
+  cuisineType: string;
+  cuisineTypeAr: string;
+  rating: number;
+  totalRatings: number;
+  deliveryTimeMin: number;
+  deliveryTimeMax: number;
+  minimumOrder: number;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  address: string;
+  city: string;
+  isActive: boolean;
+  isFeatured: boolean;
+}
+
+export interface RestaurantCategory {
+  id: string;
+  name: string;
+  nameAr: string;
+  icon: string;
+  color: string;
+  sortOrder: number;
+  isActive: boolean;
+}
+
+// Menu Types
+export interface MenuItem {
+  id: string;
+  restaurantId: string;
+  name: string;
+  nameAr: string;
+  description: string;
+  descriptionAr: string;
+  price: number;
+  image: string;
+  category: string;
+  isVegetarian: boolean;
+  isVegan: boolean;
+  isGlutenFree: boolean;
+  isAvailable: boolean;
+  preparationTime: number;
+  calories: number;
+  allergens: string[];
+}
+
+export interface CartItem {
+  id: string;
+  menuItem: MenuItem;
+  quantity: number;
+  specialInstructions?: string;
+  totalPrice: number;
+}
+
+// Order Types
+export interface Order {
+  id: string;
+  userId: string;
+  restaurantId: string;
+  orderNumber: string;
+  status: OrderStatus;
+  items: CartItem[];
+  subtotal: number;
+  deliveryFee: number;
+  taxAmount: number;
+  totalAmount: number;
+  deliveryProvider: string;
+  deliveryProviderOrderId?: string;
+  deliveryAddress: string;
+  deliveryInstructions?: string;
+  estimatedDeliveryTime?: Date;
+  actualDeliveryTime?: Date;
+  paymentMethod: string;
+  paymentStatus: PaymentStatus;
+  paymentTransactionId?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type OrderStatus = 
+  | 'pending'
+  | 'confirmed'
+  | 'preparing'
+  | 'ready'
+  | 'out_for_delivery'
+  | 'delivered'
+  | 'cancelled';
+
+export type PaymentStatus = 
+  | 'pending'
+  | 'paid'
+  | 'failed'
+  | 'refunded';
+
+// User Types
+export interface User {
+  id: string;
+  email: string;
+  phone?: string;
+  firstName: string;
+  lastName: string;
+  location?: {
+    lat: number;
+    lng: number;
+  };
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface UserPreferences {
+  id: string;
+  userId: string;
+  preferredDeliveryProvider?: string;
+  dietaryRestrictions: string[];
+  favoriteCuisines: string[];
+  notificationSettings: NotificationSettings;
+  createdAt: Date;
+}
+
+export interface NotificationSettings {
+  email: boolean;
+  sms: boolean;
+  push: boolean;
+  orderUpdates: boolean;
+  promotions: boolean;
+}
+
+// State Types
 export interface PricingState {
   providers: Provider[];
   estimates: EstimateEntity[];
   selectedDistance: number;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface RestaurantState {
+  restaurants: Restaurant[];
+  categories: RestaurantCategory[];
+  selectedRestaurant: Restaurant | null;
+  menuItems: MenuItem[];
+  loading: boolean;
+  error: string | null;
+}
+
+export interface CartState {
+  items: CartItem[];
+  restaurantId: string | null;
+  subtotal: number;
+  deliveryFee: number;
+  totalAmount: number;
+  loading: boolean;
+}
+
+export interface OrderState {
+  orders: Order[];
+  currentOrder: Order | null;
   loading: boolean;
   error: string | null;
 }
@@ -45,9 +213,13 @@ export interface SettingsState {
 
 export interface AppState {
   pricing: PricingState;
+  restaurant: RestaurantState;
+  cart: CartState;
+  order: OrderState;
   settings: SettingsState;
 }
 
+// Utility Types
 export interface PriceBreakdown {
   baseFee: number;
   distanceFee: number;
@@ -77,12 +249,29 @@ export interface NavigationItem {
   icon: string;
 }
 
+// Component Props Types
 export interface ProviderCardProps {
   provider: Provider;
   estimate: EstimateEntity;
   isCheapest: boolean;
   isFastest: boolean;
   onOrder: (providerId: string) => void;
+}
+
+export interface RestaurantCardProps {
+  restaurant: Restaurant;
+  onSelect: (restaurant: Restaurant) => void;
+}
+
+export interface MenuItemCardProps {
+  item: MenuItem;
+  onAddToCart: (item: MenuItem, quantity: number) => void;
+}
+
+export interface CartItemProps {
+  item: CartItem;
+  onUpdateQuantity: (itemId: string, quantity: number) => void;
+  onRemove: (itemId: string) => void;
 }
 
 export interface DistanceSelectorProps {
