@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
 import { 
   Container, 
   Box, 
@@ -31,6 +32,7 @@ import { RESTAURANT_CATEGORIES } from '@/data/restaurants';
 
 export default function HomePage() {
   const { t } = useTranslation();
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { language } = useAppSelector((state) => state.settings);
   const { 
@@ -66,8 +68,8 @@ export default function HomePage() {
 
   const handleRestaurantSelect = (restaurant: RestaurantType) => {
     dispatch(setSelectedRestaurant(restaurant));
-    // Navigate to restaurant page (you can implement this later)
-    console.log('Selected restaurant:', restaurant);
+    // Navigate to restaurant page
+    router.push(`/restaurant/${restaurant.id}`);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {

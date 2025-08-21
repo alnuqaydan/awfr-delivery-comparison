@@ -1,77 +1,24 @@
 import { Restaurant, RestaurantCategory, MenuItem } from '@/types';
+import { ENHANCED_RESTAURANT_CATEGORIES } from '@/services/ksaRestaurantService';
 
-export const RESTAURANT_CATEGORIES: RestaurantCategory[] = [
-  {
-    id: 'pizza',
-    name: 'Pizza',
-    nameAr: 'بيتزا',
-    icon: '🍕',
-    color: '#FF6B6B',
-    sortOrder: 1,
-    isActive: true,
-  },
-  {
-    id: 'burger',
-    name: 'Burgers',
-    nameAr: 'برجر',
-    icon: '🍔',
-    color: '#4ECDC4',
-    sortOrder: 2,
-    isActive: true,
-  },
-  {
-    id: 'asian',
-    name: 'Asian',
-    nameAr: 'آسيوي',
-    icon: '🍜',
-    color: '#45B7D1',
-    sortOrder: 3,
-    isActive: true,
-  },
-  {
-    id: 'arabic',
-    name: 'Arabic',
-    nameAr: 'عربي',
-    icon: '🍖',
-    color: '#96CEB4',
-    sortOrder: 4,
-    isActive: true,
-  },
-  {
-    id: 'coffee',
-    name: 'Coffee & Desserts',
-    nameAr: 'قهوة وحلويات',
-    icon: '☕',
-    color: '#FFEAA7',
-    sortOrder: 5,
-    isActive: true,
-  },
-  {
-    id: 'seafood',
-    name: 'Seafood',
-    nameAr: 'مأكولات بحرية',
-    icon: '🐟',
-    color: '#DDA0DD',
-    sortOrder: 6,
-    isActive: true,
-  },
-];
+// استخدام الفئات المحسنة من الخدمة الخارجية
+export const RESTAURANT_CATEGORIES: RestaurantCategory[] = ENHANCED_RESTAURANT_CATEGORIES;
 
 export const RESTAURANTS: Restaurant[] = [
   {
-    id: 'pizza-hut-riyadh',
-    name: 'Pizza Hut',
-    nameAr: 'بيتزا هت',
-    description: 'World-famous pizza chain with fresh ingredients and delicious toppings',
-    descriptionAr: 'سلسلة بيتزا عالمية شهيرة بمكونات طازجة وتوابل لذيذة',
-    logo: '/images/restaurants/pizza-hut-logo.png',
-    banner: '/images/restaurants/pizza-hut-banner.jpg',
-    cuisineType: 'pizza',
-    cuisineTypeAr: 'بيتزا',
+    id: 'restaurant-1',
+    name: 'Burger Palace',
+    nameAr: 'قصر البرجر',
+    description: 'Best burgers in town with fresh ingredients and amazing taste',
+    descriptionAr: 'أفضل البرجر في المدينة مع مكونات طازجة وطعم رائع',
+    logo: '/images/restaurants/burger-palace-logo.jpg',
+    banner: '/images/restaurants/burger-palace-banner.jpg',
+    cuisineType: 'Fast Food',
+    cuisineTypeAr: 'وجبات سريعة',
     rating: 4.5,
-    totalRatings: 120,
+    totalRatings: 1250,
     deliveryTimeMin: 25,
-    deliveryTimeMax: 35,
+    deliveryTimeMax: 45,
     minimumOrder: 30,
     location: {
       lat: 24.7136,
@@ -83,19 +30,19 @@ export const RESTAURANTS: Restaurant[] = [
     isFeatured: true,
   },
   {
-    id: 'mcdonalds-riyadh',
-    name: 'McDonald\'s',
-    nameAr: 'ماكدونالدز',
-    description: 'Fast food restaurant serving burgers, fries, and more',
-    descriptionAr: 'مطعم وجبات سريعة يقدم البرجر والبطاطس والمزيد',
-    logo: '/images/restaurants/mcdonalds-logo.png',
-    banner: '/images/restaurants/mcdonalds-banner.jpg',
-    cuisineType: 'burger',
-    cuisineTypeAr: 'برجر',
+    id: 'restaurant-2',
+    name: 'Shawarma House',
+    nameAr: 'بيت الشاورما',
+    description: 'Authentic Arabic shawarma with traditional recipes',
+    descriptionAr: 'شاورما عربية أصيلة مع وصفات تقليدية',
+    logo: '/images/restaurants/shawarma-house-logo.jpg',
+    banner: '/images/restaurants/shawarma-house-banner.jpg',
+    cuisineType: 'Arabic',
+    cuisineTypeAr: 'مأكولات عربية',
     rating: 4.3,
-    totalRatings: 89,
+    totalRatings: 890,
     deliveryTimeMin: 20,
-    deliveryTimeMax: 30,
+    deliveryTimeMax: 35,
     minimumOrder: 25,
     location: {
       lat: 24.7136,
@@ -104,23 +51,23 @@ export const RESTAURANTS: Restaurant[] = [
     address: 'Olaya Street, Riyadh',
     city: 'Riyadh',
     isActive: true,
-    isFeatured: true,
+    isFeatured: false,
   },
   {
-    id: 'asian-dragon-riyadh',
-    name: 'Asian Dragon',
-    nameAr: 'التنين الآسيوي',
-    description: 'Authentic Asian cuisine with fresh ingredients and traditional recipes',
-    descriptionAr: 'مأكولات آسيوية أصيلة بمكونات طازجة ووصفات تقليدية',
-    logo: '/images/restaurants/asian-dragon-logo.png',
-    banner: '/images/restaurants/asian-dragon-banner.jpg',
-    cuisineType: 'asian',
-    cuisineTypeAr: 'آسيوي',
+    id: 'restaurant-3',
+    name: 'Sushi Master',
+    nameAr: 'سوشي ماستر',
+    description: 'Fresh sushi and Japanese cuisine prepared by expert chefs',
+    descriptionAr: 'سوشي طازج ومأكولات يابانية محضرة من قبل طهاة خبراء',
+    logo: '/images/restaurants/sushi-master-logo.jpg',
+    banner: '/images/restaurants/sushi-master-banner.jpg',
+    cuisineType: 'Asian',
+    cuisineTypeAr: 'مأكولات آسيوية',
     rating: 4.7,
-    totalRatings: 56,
+    totalRatings: 650,
     deliveryTimeMin: 30,
-    deliveryTimeMax: 45,
-    minimumOrder: 40,
+    deliveryTimeMax: 50,
+    minimumOrder: 50,
     location: {
       lat: 24.7136,
       lng: 46.6753,
@@ -128,23 +75,23 @@ export const RESTAURANTS: Restaurant[] = [
     address: 'Tahlia Street, Riyadh',
     city: 'Riyadh',
     isActive: true,
-    isFeatured: false,
+    isFeatured: true,
   },
   {
-    id: 'al-baik-riyadh',
-    name: 'Al Baik',
-    nameAr: 'البيك',
-    description: 'Famous Saudi fast food chain known for fried chicken',
-    descriptionAr: 'سلسلة وجبات سريعة سعودية شهيرة بالدجاج المقلي',
-    logo: '/images/restaurants/al-baik-logo.png',
-    banner: '/images/restaurants/al-baik-banner.jpg',
-    cuisineType: 'arabic',
-    cuisineTypeAr: 'عربي',
-    rating: 4.8,
-    totalRatings: 234,
-    deliveryTimeMin: 15,
-    deliveryTimeMax: 25,
-    minimumOrder: 20,
+    id: 'restaurant-4',
+    name: 'Pizza Corner',
+    nameAr: 'زاوية البيتزا',
+    description: 'Italian pizza with authentic recipes and fresh toppings',
+    descriptionAr: 'بيتزا إيطالية مع وصفات أصيلة وإضافات طازجة',
+    logo: '/images/restaurants/pizza-corner-logo.jpg',
+    banner: '/images/restaurants/pizza-corner-banner.jpg',
+    cuisineType: 'Italian',
+    cuisineTypeAr: 'مأكولات إيطالية',
+    rating: 4.4,
+    totalRatings: 1100,
+    deliveryTimeMin: 35,
+    deliveryTimeMax: 55,
+    minimumOrder: 40,
     location: {
       lat: 24.7136,
       lng: 46.6753,
@@ -152,318 +99,369 @@ export const RESTAURANTS: Restaurant[] = [
     address: 'King Abdullah Road, Riyadh',
     city: 'Riyadh',
     isActive: true,
-    isFeatured: true,
-  },
-  {
-    id: 'starbucks-riyadh',
-    name: 'Starbucks',
-    nameAr: 'ستاربكس',
-    description: 'Premium coffee and beverages with delicious pastries',
-    descriptionAr: 'قهوة ومشروبات فاخرة مع حلويات لذيذة',
-    logo: '/images/restaurants/starbucks-logo.png',
-    banner: '/images/restaurants/starbucks-banner.jpg',
-    cuisineType: 'coffee',
-    cuisineTypeAr: 'قهوة',
-    rating: 4.4,
-    totalRatings: 78,
-    deliveryTimeMin: 20,
-    deliveryTimeMax: 30,
-    minimumOrder: 35,
-    location: {
-      lat: 24.7136,
-      lng: 46.6753,
-    },
-    address: 'King Fahd Road, Riyadh',
-    city: 'Riyadh',
-    isActive: true,
     isFeatured: false,
   },
 ];
 
 export const MENU_ITEMS: MenuItem[] = [
-  // Pizza Hut Menu Items
+  // Burger Palace Menu
   {
-    id: 'ph-margherita',
-    restaurantId: 'pizza-hut-riyadh',
-    name: 'Margherita Pizza',
-    nameAr: 'بيتزا مارجريتا',
-    description: 'Classic pizza with tomato sauce, mozzarella cheese, and fresh basil',
-    descriptionAr: 'بيتزا كلاسيكية مع صلصة الطماطم وجبنة الموزاريلا والريحان الطازج',
-    price: 45,
-    image: '/images/menu/margherita-pizza.jpg',
-    category: 'pizza',
-    isVegetarian: true,
-    isVegan: false,
-    isGlutenFree: false,
-    isAvailable: true,
-    preparationTime: 15,
-    calories: 285,
-    allergens: ['gluten', 'dairy'],
-  },
-  {
-    id: 'ph-pepperoni',
-    restaurantId: 'pizza-hut-riyadh',
-    name: 'Pepperoni Pizza',
-    nameAr: 'بيتزا بيبروني',
-    description: 'Spicy pepperoni with melted cheese and tomato sauce',
-    descriptionAr: 'بيبروني حار مع الجبنة المذابة وصلصة الطماطم',
-    price: 55,
-    image: '/images/menu/pepperoni-pizza.jpg',
-    category: 'pizza',
+    id: 'item-1',
+    restaurantId: 'restaurant-1',
+    name: 'Classic Beef Burger',
+    nameAr: 'برجر لحم كلاسيك',
+    description: 'Juicy beef patty with fresh lettuce, tomato, and special sauce',
+    descriptionAr: 'برجر لحم عصير مع خس طازج وطماطم وصلصة خاصة',
+    price: 25,
+    image: '/images/menu/beef-burger.jpg',
+    category: 'Burgers',
     isVegetarian: false,
     isVegan: false,
     isGlutenFree: false,
     isAvailable: true,
-    preparationTime: 18,
-    calories: 320,
-    allergens: ['gluten', 'dairy', 'pork'],
-  },
-  {
-    id: 'ph-cheese',
-    restaurantId: 'pizza-hut-riyadh',
-    name: 'Cheese Pizza',
-    nameAr: 'بيتزا تشيزي',
-    description: 'Extra cheese pizza with rich mozzarella and parmesan',
-    descriptionAr: 'بيتزا جبنة إضافية مع موزاريلا غنية وجبنة بارميزان',
-    price: 50,
-    image: '/images/menu/cheese-pizza.jpg',
-    category: 'pizza',
-    isVegetarian: true,
-    isVegan: false,
-    isGlutenFree: false,
-    isAvailable: true,
-    preparationTime: 16,
-    calories: 310,
+    preparationTime: 15,
+    calories: 450,
     allergens: ['gluten', 'dairy'],
   },
   {
-    id: 'ph-chicken-wings',
-    restaurantId: 'pizza-hut-riyadh',
-    name: 'Chicken Wings',
-    nameAr: 'أجنحة الدجاج',
-    description: 'Crispy chicken wings with your choice of sauce',
-    descriptionAr: 'أجنحة دجاج مقرمشة مع صلصة من اختيارك',
-    price: 35,
-    image: '/images/menu/chicken-wings.jpg',
-    category: 'appetizers',
+    id: 'item-2',
+    restaurantId: 'restaurant-1',
+    name: 'Chicken Burger',
+    nameAr: 'برجر دجاج',
+    description: 'Grilled chicken breast with mayo and vegetables',
+    descriptionAr: 'صدر دجاج مشوي مع المايونيز والخضروات',
+    price: 22,
+    image: '/images/menu/chicken-burger.jpg',
+    category: 'Burgers',
     isVegetarian: false,
     isVegan: false,
     isGlutenFree: false,
     isAvailable: true,
     preparationTime: 12,
-    calories: 280,
-    allergens: ['gluten'],
-  },
-
-  // McDonald's Menu Items
-  {
-    id: 'mc-big-mac',
-    restaurantId: 'mcdonalds-riyadh',
-    name: 'Big Mac',
-    nameAr: 'بيج ماك',
-    description: 'Two beef patties with special sauce, lettuce, cheese, pickles, onions on a sesame seed bun',
-    descriptionAr: 'قطعتان من لحم البقر مع صلصة خاصة وخس وجبنة ومخلل وبصل على خبز بالسمسم',
-    price: 25,
-    image: '/images/menu/big-mac.jpg',
-    category: 'burgers',
-    isVegetarian: false,
-    isVegan: false,
-    isGlutenFree: false,
-    isAvailable: true,
-    preparationTime: 8,
-    calories: 550,
-    allergens: ['gluten', 'dairy', 'beef'],
+    calories: 380,
+    allergens: ['gluten', 'dairy'],
   },
   {
-    id: 'mc-cheeseburger',
-    restaurantId: 'mcdonalds-riyadh',
-    name: 'Cheeseburger',
-    nameAr: 'تشيز برجر',
-    description: 'Beef patty with cheese, onions, pickles, mustard, and ketchup',
-    descriptionAr: 'قطعة لحم بقري مع جبنة وبصل ومخلل وخردل وكاتشب',
-    price: 18,
-    image: '/images/menu/cheeseburger.jpg',
-    category: 'burgers',
-    isVegetarian: false,
-    isVegan: false,
-    isGlutenFree: false,
-    isAvailable: true,
-    preparationTime: 6,
-    calories: 300,
-    allergens: ['gluten', 'dairy', 'beef'],
-  },
-  {
-    id: 'mc-fries',
-    restaurantId: 'mcdonalds-riyadh',
+    id: 'item-3',
+    restaurantId: 'restaurant-1',
     name: 'French Fries',
     nameAr: 'بطاطس مقلية',
-    description: 'Golden crispy french fries with sea salt',
-    descriptionAr: 'بطاطس مقلية ذهبية مقرمشة مع ملح البحر',
-    price: 12,
+    description: 'Crispy golden fries served with ketchup',
+    descriptionAr: 'بطاطس مقلية مقرمشة ذهبية مع الكاتشب',
+    price: 8,
     image: '/images/menu/french-fries.jpg',
-    category: 'sides',
+    category: 'Sides',
     isVegetarian: true,
     isVegan: true,
     isGlutenFree: true,
     isAvailable: true,
-    preparationTime: 4,
-    calories: 230,
+    preparationTime: 8,
+    calories: 250,
+    allergens: [],
+  },
+  {
+    id: 'item-4',
+    restaurantId: 'restaurant-1',
+    name: 'Soft Drink',
+    nameAr: 'مشروب غازي',
+    description: 'Refreshing soft drink of your choice',
+    descriptionAr: 'مشروب غازي منعش من اختيارك',
+    price: 5,
+    image: '/images/menu/soft-drink.jpg',
+    category: 'Beverages',
+    isVegetarian: true,
+    isVegan: true,
+    isGlutenFree: true,
+    isAvailable: true,
+    preparationTime: 2,
+    calories: 150,
     allergens: [],
   },
 
-  // Asian Dragon Menu Items
+  // Shawarma House Menu
   {
-    id: 'ad-sweet-sour-chicken',
-    restaurantId: 'asian-dragon-riyadh',
-    name: 'Sweet & Sour Chicken',
-    nameAr: 'دجاج حلو وحامض',
-    description: 'Crispy chicken with sweet and sour sauce, bell peppers, and pineapple',
-    descriptionAr: 'دجاج مقرمش مع صلصة حلوة وحامضة وفلفل حلو وأناناس',
-    price: 45,
-    image: '/images/menu/sweet-sour-chicken.jpg',
-    category: 'main',
-    isVegetarian: false,
-    isVegan: false,
-    isGlutenFree: false,
-    isAvailable: true,
-    preparationTime: 20,
-    calories: 380,
-    allergens: ['gluten', 'soy'],
-  },
-  {
-    id: 'ad-fried-rice',
-    restaurantId: 'asian-dragon-riyadh',
-    name: 'Fried Rice',
-    nameAr: 'أرز مقلي',
-    description: 'Stir-fried rice with vegetables, eggs, and soy sauce',
-    descriptionAr: 'أرز مقلي مع خضروات وبيض وصلصة الصويا',
-    price: 25,
-    image: '/images/menu/fried-rice.jpg',
-    category: 'sides',
-    isVegetarian: true,
-    isVegan: false,
-    isGlutenFree: false,
-    isAvailable: true,
-    preparationTime: 12,
-    calories: 280,
-    allergens: ['soy', 'eggs'],
-  },
-
-  // Al Baik Menu Items
-  {
-    id: 'ab-fried-chicken',
-    restaurantId: 'al-baik-riyadh',
-    name: 'Fried Chicken',
-    nameAr: 'دجاج مقلي',
-    description: 'Crispy fried chicken with special seasoning',
-    descriptionAr: 'دجاج مقلي مقرمش مع توابل خاصة',
-    price: 35,
-    image: '/images/menu/fried-chicken.jpg',
-    category: 'main',
-    isVegetarian: false,
-    isVegan: false,
-    isGlutenFree: false,
-    isAvailable: true,
-    preparationTime: 15,
-    calories: 420,
-    allergens: ['gluten'],
-  },
-  {
-    id: 'ab-chicken-burger',
-    restaurantId: 'al-baik-riyadh',
-    name: 'Chicken Burger',
-    nameAr: 'برجر دجاج',
-    description: 'Grilled chicken burger with lettuce and special sauce',
-    descriptionAr: 'برجر دجاج مشوي مع خس وصلصة خاصة',
-    price: 22,
-    image: '/images/menu/chicken-burger.jpg',
-    category: 'burgers',
+    id: 'item-5',
+    restaurantId: 'restaurant-2',
+    name: 'Chicken Shawarma',
+    nameAr: 'شاورما دجاج',
+    description: 'Marinated chicken with tahini sauce and pickles',
+    descriptionAr: 'دجاج متبل مع صلصة الطحينة والمخلل',
+    price: 18,
+    image: '/images/menu/chicken-shawarma.jpg',
+    category: 'Shawarma',
     isVegetarian: false,
     isVegan: false,
     isGlutenFree: false,
     isAvailable: true,
     preparationTime: 10,
     calories: 320,
-    allergens: ['gluten'],
+    allergens: ['gluten', 'sesame'],
+  },
+  {
+    id: 'item-6',
+    restaurantId: 'restaurant-2',
+    name: 'Beef Shawarma',
+    nameAr: 'شاورما لحم',
+    description: 'Tender beef with garlic sauce and vegetables',
+    descriptionAr: 'لحم طري مع صلصة الثوم والخضروات',
+    price: 22,
+    image: '/images/menu/beef-shawarma.jpg',
+    category: 'Shawarma',
+    isVegetarian: false,
+    isVegan: false,
+    isGlutenFree: false,
+    isAvailable: true,
+    preparationTime: 12,
+    calories: 380,
+    allergens: ['gluten', 'dairy'],
+  },
+  {
+    id: 'item-7',
+    restaurantId: 'restaurant-2',
+    name: 'Falafel Wrap',
+    nameAr: 'لفة فلافل',
+    description: 'Crispy falafel with tahini sauce',
+    descriptionAr: 'فلافل مقرمش مع صلصة الطحينة',
+    price: 15,
+    image: '/images/menu/falafel-wrap.jpg',
+    category: 'Vegetarian',
+    isVegetarian: true,
+    isVegan: true,
+    isGlutenFree: false,
+    isAvailable: true,
+    preparationTime: 8,
+    calories: 280,
+    allergens: ['gluten', 'sesame'],
   },
 
-  // Starbucks Menu Items
+  // Sushi Master Menu
   {
-    id: 'sb-latte',
-    restaurantId: 'starbucks-riyadh',
-    name: 'Caffe Latte',
-    nameAr: 'لاتيه',
-    description: 'Espresso with steamed milk and a light layer of milk foam',
-    descriptionAr: 'إسبريسو مع حليب مبخر وطبقة خفيفة من رغوة الحليب',
-    price: 18,
-    image: '/images/menu/latte.jpg',
-    category: 'beverages',
-    isVegetarian: true,
+    id: 'item-8',
+    restaurantId: 'restaurant-3',
+    name: 'California Roll',
+    nameAr: 'رول كاليفورنيا',
+    description: 'Crab, avocado, and cucumber roll',
+    descriptionAr: 'رول سلطعون وأفوكادو وخيار',
+    price: 35,
+    image: '/images/menu/california-roll.jpg',
+    category: 'Sushi',
+    isVegetarian: false,
     isVegan: false,
     isGlutenFree: true,
     isAvailable: true,
-    preparationTime: 5,
-    calories: 120,
-    allergens: ['dairy'],
+    preparationTime: 20,
+    calories: 220,
+    allergens: ['fish', 'soy'],
   },
   {
-    id: 'sb-cappuccino',
-    restaurantId: 'starbucks-riyadh',
-    name: 'Cappuccino',
-    nameAr: 'كابتشينو',
-    description: 'Espresso with equal parts steamed milk and milk foam',
-    descriptionAr: 'إسبريسو مع أجزاء متساوية من الحليب المبخر ورغوة الحليب',
-    price: 16,
-    image: '/images/menu/cappuccino.jpg',
-    category: 'beverages',
-    isVegetarian: true,
+    id: 'item-9',
+    restaurantId: 'restaurant-3',
+    name: 'Salmon Nigiri',
+    nameAr: 'نيجيري سلمون',
+    description: 'Fresh salmon over seasoned rice',
+    descriptionAr: 'سلمون طازج فوق أرز متبل',
+    price: 28,
+    image: '/images/menu/salmon-nigiri.jpg',
+    category: 'Sushi',
+    isVegetarian: false,
     isVegan: false,
     isGlutenFree: true,
     isAvailable: true,
-    preparationTime: 5,
-    calories: 100,
-    allergens: ['dairy'],
+    preparationTime: 15,
+    calories: 180,
+    allergens: ['fish', 'soy'],
   },
   {
-    id: 'sb-chocolate-cake',
-    restaurantId: 'starbucks-riyadh',
-    name: 'Chocolate Cake',
-    nameAr: 'كيك شوكولاتة',
-    description: 'Rich chocolate cake with chocolate ganache',
-    descriptionAr: 'كيك شوكولاتة غني مع غاناش الشوكولاتة',
-    price: 25,
-    image: '/images/menu/chocolate-cake.jpg',
-    category: 'desserts',
+    id: 'item-10',
+    restaurantId: 'restaurant-3',
+    name: 'Miso Soup',
+    nameAr: 'حساء ميسو',
+    description: 'Traditional Japanese miso soup',
+    descriptionAr: 'حساء ميسو ياباني تقليدي',
+    price: 12,
+    image: '/images/menu/miso-soup.jpg',
+    category: 'Soups',
+    isVegetarian: true,
+    isVegan: true,
+    isGlutenFree: false,
+    isAvailable: true,
+    preparationTime: 8,
+    calories: 80,
+    allergens: ['soy'],
+  },
+
+  // Pizza Corner Menu
+  {
+    id: 'item-11',
+    restaurantId: 'restaurant-4',
+    name: 'Margherita Pizza',
+    nameAr: 'بيتزا مارجريتا',
+    description: 'Classic pizza with tomato sauce and mozzarella',
+    descriptionAr: 'بيتزا كلاسيكية مع صلصة الطماطم والموزاريلا',
+    price: 45,
+    image: '/images/menu/margherita-pizza.jpg',
+    category: 'Pizza',
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: false,
     isAvailable: true,
-    preparationTime: 2,
-    calories: 350,
-    allergens: ['gluten', 'dairy', 'eggs'],
+    preparationTime: 25,
+    calories: 650,
+    allergens: ['gluten', 'dairy'],
+  },
+  {
+    id: 'item-12',
+    restaurantId: 'restaurant-4',
+    name: 'Pepperoni Pizza',
+    nameAr: 'بيتزا بيبروني',
+    description: 'Pizza topped with pepperoni and cheese',
+    descriptionAr: 'بيتزا مغطاة بالبيبروني والجبن',
+    price: 55,
+    image: '/images/menu/pepperoni-pizza.jpg',
+    category: 'Pizza',
+    isVegetarian: false,
+    isVegan: false,
+    isGlutenFree: false,
+    isAvailable: true,
+    preparationTime: 28,
+    calories: 720,
+    allergens: ['gluten', 'dairy'],
+  },
+  {
+    id: 'item-13',
+    restaurantId: 'restaurant-4',
+    name: 'Garlic Bread',
+    nameAr: 'خبز ثوم',
+    description: 'Toasted bread with garlic butter and herbs',
+    descriptionAr: 'خبز محمص مع زبدة الثوم والأعشاب',
+    price: 12,
+    image: '/images/menu/garlic-bread.jpg',
+    category: 'Sides',
+    isVegetarian: true,
+    isVegan: false,
+    isGlutenFree: false,
+    isAvailable: true,
+    preparationTime: 8,
+    calories: 180,
+    allergens: ['gluten', 'dairy'],
   },
 ];
 
-export function getRestaurantsByCategory(categoryId: string): Restaurant[] {
-  return RESTAURANTS.filter(restaurant => 
-    restaurant.cuisineType === categoryId && restaurant.isActive
-  );
-}
+export const getRestaurantsByCategory = (categoryId: string): Restaurant[] => {
+  if (categoryId === 'all') {
+    return RESTAURANTS;
+  }
+  
+  return RESTAURANTS.filter(restaurant => {
+    const category = RESTAURANT_CATEGORIES.find(cat => cat.id === categoryId);
+    if (!category) return false;
+    
+    return restaurant.cuisineType.toLowerCase() === category.name.toLowerCase();
+  });
+};
 
-export function getRestaurantById(id: string): Restaurant | undefined {
+export const getRestaurantById = (id: string): Restaurant | undefined => {
   return RESTAURANTS.find(restaurant => restaurant.id === id);
-}
+};
 
-export function getMenuItemsByRestaurant(restaurantId: string): MenuItem[] {
-  return MENU_ITEMS.filter(item => 
-    item.restaurantId === restaurantId && item.isAvailable
-  );
-}
+export const getMenuItemsByRestaurant = (restaurantId: string): MenuItem[] => {
+  return MENU_ITEMS.filter(item => item.restaurantId === restaurantId);
+};
 
-export function getMenuItemsByCategory(restaurantId: string, category: string): MenuItem[] {
-  return MENU_ITEMS.filter(item => 
-    item.restaurantId === restaurantId && 
-    item.category === category && 
-    item.isAvailable
+export const searchRestaurants = (query: string): Restaurant[] => {
+  const lowercaseQuery = query.toLowerCase();
+  
+  return RESTAURANTS.filter(restaurant => 
+    restaurant.name.toLowerCase().includes(lowercaseQuery) ||
+    restaurant.nameAr.includes(query) ||
+    restaurant.description.toLowerCase().includes(lowercaseQuery) ||
+    restaurant.descriptionAr.includes(query) ||
+    restaurant.cuisineType.toLowerCase().includes(lowercaseQuery) ||
+    restaurant.cuisineTypeAr.includes(query)
   );
-}
+};
+
+// دمج البيانات المحلية مع البيانات الخارجية
+export const getCombinedRestaurants = async (): Promise<Restaurant[]> => {
+  try {
+    // في التطبيق الحقيقي، سيتم جلب البيانات من الخدمة الخارجية
+    // const externalRestaurants = await ksaRestaurantService.fetchAllRestaurants();
+    // return [...RESTAURANTS, ...externalRestaurants];
+    
+    // حالياً نستخدم البيانات المحلية فقط
+    return RESTAURANTS;
+  } catch (error) {
+    console.error('خطأ في دمج البيانات:', error);
+    return RESTAURANTS;
+  }
+};
+
+export const getCombinedRestaurantById = async (id: string): Promise<Restaurant | undefined> => {
+  try {
+    // البحث في البيانات المحلية أولاً
+    const localRestaurant = RESTAURANTS.find(restaurant => restaurant.id === id);
+    if (localRestaurant) {
+      return localRestaurant;
+    }
+
+    // إذا لم يتم العثور عليه، جرب الخدمة الخارجية
+    // const externalRestaurant = await ksaRestaurantService.fetchRestaurantById(id);
+    // return externalRestaurant;
+    
+    return undefined;
+  } catch (error) {
+    console.error('خطأ في جلب المطعم:', error);
+    return undefined;
+  }
+};
+
+export const getCombinedMenuItemsByRestaurant = async (restaurantId: string): Promise<MenuItem[]> => {
+  try {
+    // البحث في البيانات المحلية أولاً
+    const localMenuItems = MENU_ITEMS.filter(item => item.restaurantId === restaurantId);
+    if (localMenuItems.length > 0) {
+      return localMenuItems;
+    }
+
+    // إذا لم يتم العثور على قائمة طعام محلية، جرب الخدمة الخارجية
+    // const externalMenuItems = await ksaRestaurantService.fetchRestaurantMenu(restaurantId);
+    // return externalMenuItems;
+    
+    return [];
+  } catch (error) {
+    console.error('خطأ في جلب قائمة الطعام:', error);
+    return [];
+  }
+};
+
+export const searchCombinedRestaurants = async (query: string): Promise<Restaurant[]> => {
+  try {
+    // البحث في البيانات المحلية أولاً
+    const localResults = searchRestaurants(query);
+    
+    // في التطبيق الحقيقي، سيتم البحث في البيانات الخارجية أيضاً
+    // const externalResults = await ksaRestaurantService.searchRestaurants(query);
+    // return [...localResults, ...externalResults];
+    
+    return localResults;
+  } catch (error) {
+    console.error('خطأ في البحث:', error);
+    return searchRestaurants(query);
+  }
+};
+
+export const getCombinedRestaurantsByCategory = async (categoryId: string): Promise<Restaurant[]> => {
+  try {
+    // البحث في البيانات المحلية أولاً
+    const localResults = getRestaurantsByCategory(categoryId);
+    
+    // في التطبيق الحقيقي، سيتم البحث في البيانات الخارجية أيضاً
+    // const externalResults = await ksaRestaurantService.fetchRestaurantsByCategory(categoryId);
+    // return [...localResults, ...externalResults];
+    
+    return localResults;
+  } catch (error) {
+    console.error('خطأ في جلب المطاعم حسب الفئة:', error);
+    return getRestaurantsByCategory(categoryId);
+  }
+};

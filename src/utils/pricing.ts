@@ -87,6 +87,26 @@ export const PROVIDERS: Provider[] = [
   },
 ];
 
+// Calculate distance between two points using Haversine formula
+export function calculateDistance(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number
+): number {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLng = (lng2 - lng1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
 export function calculatePrice(provider: Provider, distance: number): PriceBreakdown {
   const baseFee = provider.baseFee;
   const distanceFee = distance * provider.perKm;
@@ -102,17 +122,37 @@ export function calculatePrice(provider: Provider, distance: number): PriceBreak
   };
 }
 
-export function calculateEstimates(distance: number): EstimateEntity[] {
+export function calculateEstimates(
+  distance: number,
+  restaurantLocation?: { lat: number; lng: number },
+  userLocation?: { lat: number; lng: number }
+): EstimateEntity[] {
+  // If we have both locations, calculate actual distance
+  let actualDistance = distance;
+  if (restaurantLocation && userLocation) {
+    actualDistance = calculateDistance(
+      restaurantLocation.lat,
+      restaurantLocation.lng,
+      userLocation.lat,
+      userLocation.lng
+    );
+  }
+
   const estimates: EstimateEntity[] = PROVIDERS.map((provider) => {
-    const priceBreakdown = calculatePrice(provider, distance);
+    const priceBreakdown = calculatePrice(provider, actualDistance);
+    
+    // Adjust ETA based on distance
+    const baseEta = provider.etaMinutes;
+    const distanceAdjustment = Math.ceil(actualDistance / 5) * 2; // +2 minutes per 5km
+    const adjustedEta = baseEta + distanceAdjustment;
     
     return {
       providerId: provider.id,
       providerName: provider.name,
       providerNameAr: provider.nameAr,
       totalPrice: priceBreakdown.totalPrice,
-      etaMinutes: provider.etaMinutes,
-      distanceKm: distance,
+      etaMinutes: adjustedEta,
+      distanceKm: actualDistance,
       currency: 'SAR',
       priceBreakdown: {
         baseFee: priceBreakdown.baseFee,
@@ -167,4 +207,39 @@ export function getProviderById(id: string): Provider | undefined {
 
 export function getActiveProviders(): Provider[] {
   return PROVIDERS.filter(provider => provider.isActive);
+}
+
+// Get user's current location
+export function getCurrentLocation(): Promise<{ lat: number; lng: number }> {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error('Geolocation is not supported by this browser'));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        resolve({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      (error) => {
+        reject(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000, // 5 minutes
+      }
+    );
+  });
+}
+
+// Get default location (Riyadh)
+export function getDefaultLocation(): { lat: number; lng: number } {
+  return {
+    lat: 24.7136,
+    lng: 46.6753,
+  };
 }

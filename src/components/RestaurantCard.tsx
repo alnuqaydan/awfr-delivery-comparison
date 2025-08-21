@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Card,
   CardContent,
@@ -19,11 +20,14 @@ import {
 } from '@mui/icons-material';
 import { Restaurant, RestaurantCardProps } from '@/types';
 import { formatPrice } from '@/utils/pricing';
+import { useAppSelector } from '@/hooks';
 
 const RestaurantCard: React.FC<RestaurantCardProps> = ({
   restaurant,
   onSelect,
 }) => {
+  const router = useRouter();
+  const { language } = useAppSelector((state) => state.settings);
   const [isFavorite, setIsFavorite] = React.useState(false);
 
   const handleFavoriteToggle = (e: React.MouseEvent) => {
@@ -32,7 +36,12 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   };
 
   const handleCardClick = () => {
-    onSelect(restaurant);
+    if (onSelect) {
+      onSelect(restaurant);
+    } else {
+      // Navigate to restaurant page
+      router.push(`/restaurant/${restaurant.id}`);
+    }
   };
 
   return (
@@ -80,7 +89,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
             left: 8,
             zIndex: 1,
           }}
-          badgeContent="مميز"
+          badgeContent={language === 'ar' ? 'مميز' : 'Featured'}
           color="primary"
         />
       )}
@@ -90,7 +99,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
         component="img"
         height="200"
         image={restaurant.banner || '/images/restaurant-placeholder.jpg'}
-        alt={restaurant.name}
+        alt={language === 'ar' ? restaurant.nameAr : restaurant.name}
         sx={{
           objectFit: 'cover',
         }}
@@ -110,7 +119,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
               mr: 1,
             }}
           >
-            {restaurant.name}
+            {language === 'ar' ? restaurant.nameAr : restaurant.name}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
             <Rating
@@ -128,7 +137,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
 
         {/* Cuisine Type */}
         <Chip
-          label={restaurant.cuisineTypeAr}
+          label={language === 'ar' ? restaurant.cuisineTypeAr : restaurant.cuisineType}
           size="small"
           sx={{
             mb: 1,
@@ -151,14 +160,14 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
             overflow: 'hidden',
           }}
         >
-          {restaurant.descriptionAr}
+          {language === 'ar' ? restaurant.descriptionAr : restaurant.description}
         </Typography>
 
         {/* Delivery Info */}
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
           <AccessTime sx={{ fontSize: 16, color: 'text.secondary', mr: 0.5 }} />
           <Typography variant="body2" color="text.secondary">
-            {restaurant.deliveryTimeMin}-{restaurant.deliveryTimeMax} دقيقة
+            {restaurant.deliveryTimeMin}-{restaurant.deliveryTimeMax} {language === 'ar' ? 'دقيقة' : 'min'}
           </Typography>
         </Box>
 
@@ -173,7 +182,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
         {/* Minimum Order */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="body2" color="text.secondary">
-            الحد الأدنى للطلب:
+            {language === 'ar' ? 'الحد الأدنى للطلب:' : 'Minimum Order:'}
           </Typography>
           <Typography variant="body2" fontWeight={600} color="primary">
             {formatPrice(restaurant.minimumOrder)}
