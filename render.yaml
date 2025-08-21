@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: awfr-delivery-comparison
+    env: node
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_NAME
+        value: AWFR
+      - key: NEXT_PUBLIC_APP_VERSION
+        value: 1.0.0
+      - key: NEXT_PUBLIC_APP_ENVIRONMENT
+        value: production
+    healthCheckPath: /
+    autoDeploy: true
+    branch: main

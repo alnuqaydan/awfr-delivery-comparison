@@ -1,0 +1,118 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+const resources = {
+  en: {
+    translation: {
+      app_name: 'AWFR',
+      app_description: 'Smart Delivery Price Comparison',
+      compare_prices: 'Compare Prices',
+      delivery_fee: 'Delivery Fee',
+      estimated_time: 'Estimated Time',
+      cheapest: 'Cheapest',
+      fastest: 'Fastest',
+      order_now: 'Order Now',
+      price_breakdown: 'Price Breakdown',
+      base_fee: 'Base Fee',
+      distance_fee: 'Distance Fee',
+      surge_fee: 'Surge Fee',
+      service_fee: 'Service Fee',
+      total_price: 'Total Price',
+      distance: 'Distance',
+      kilometers: 'km',
+      minutes: 'min',
+      hours: 'h',
+      settings: 'Settings',
+      language: 'Language',
+      theme: 'Theme',
+      light: 'Light',
+      dark: 'Dark',
+      system: 'System',
+      notifications: 'Notifications',
+      about: 'About',
+      version: 'Version',
+      contact: 'Contact',
+      privacy: 'Privacy Policy',
+      terms: 'Terms of Service',
+      loading: 'Loading...',
+      error: 'Error',
+      retry: 'Retry',
+      no_results: 'No results found',
+      select_distance: 'Select Distance',
+      hero_title: 'Compare Delivery Prices Instantly',
+      hero_subtitle: 'Find the best delivery deals from major providers in Saudi Arabia',
+      providers_available: 'Providers Available',
+      get_started: 'Get Started',
+      learn_more: 'Learn More',
+      footer_text: '© 2024 AWFR. All rights reserved.',
+      made_in_ksa: 'Made in Saudi Arabia',
+    },
+  },
+  ar: {
+    translation: {
+      app_name: 'أوفر',
+      app_description: 'مقارنة أسعار التوصيل الذكية',
+      compare_prices: 'قارن الأسعار',
+      delivery_fee: 'رسوم التوصيل',
+      estimated_time: 'الوقت المتوقع',
+      cheapest: 'الأرخص',
+      fastest: 'الأسرع',
+      order_now: 'اطلب الآن',
+      price_breakdown: 'تفاصيل السعر',
+      base_fee: 'الرسوم الأساسية',
+      distance_fee: 'رسوم المسافة',
+      surge_fee: 'رسوم الذروة',
+      service_fee: 'رسوم الخدمة',
+      total_price: 'السعر الإجمالي',
+      distance: 'المسافة',
+      kilometers: 'كم',
+      minutes: 'دقيقة',
+      hours: 'ساعة',
+      settings: 'الإعدادات',
+      language: 'اللغة',
+      theme: 'المظهر',
+      light: 'فاتح',
+      dark: 'داكن',
+      system: 'النظام',
+      notifications: 'الإشعارات',
+      about: 'حول',
+      version: 'الإصدار',
+      contact: 'اتصل بنا',
+      privacy: 'سياسة الخصوصية',
+      terms: 'شروط الخدمة',
+      loading: 'جاري التحميل...',
+      error: 'خطأ',
+      retry: 'إعادة المحاولة',
+      no_results: 'لم يتم العثور على نتائج',
+      select_distance: 'اختر المسافة',
+      hero_title: 'قارن أسعار التوصيل فوراً',
+      hero_subtitle: 'اعثر على أفضل عروض التوصيل من المزودين الرئيسيين في المملكة العربية السعودية',
+      providers_available: 'المزودون المتاحون',
+      get_started: 'ابدأ الآن',
+      learn_more: 'اعرف المزيد',
+      footer_text: '© 2024 أوفر. جميع الحقوق محفوظة.',
+      made_in_ksa: 'صنع في المملكة العربية السعودية',
+    },
+  },
+};
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    fallbackLng: 'en',
+    debug: process.env.NODE_ENV === 'development',
+    
+    interpolation: {
+      escapeValue: false,
+    },
+    
+    detection: {
+      order: ['localStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage'],
+    },
+  });
+
+export default i18n;
