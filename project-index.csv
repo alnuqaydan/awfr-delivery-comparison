@@ -1,12 +1,10 @@
 File Path,Description,Type,Language,Status
-src/app/page.tsx,الصفحة الرئيسية مع رابط مطاعم المملكة,Page,TypeScript,Active
-src/app/ksa-restaurants/page.tsx,صفحة مطاعم المملكة العربية السعودية,Page,TypeScript,Active
+src/app/page.tsx,الصفحة الرئيسية للتطبيق,Page,TypeScript,Active
 src/app/restaurant/[id]/page.tsx,صفحة تفاصيل المطعم,Page,TypeScript,Active
 src/app/cart/page.tsx,صفحة سلة التسوق,Page,TypeScript,Active
 src/app/checkout/page.tsx,صفحة إتمام الطلب,Page,TypeScript,Active
 src/app/delivery-comparison/page.tsx,صفحة مقارنة التوصيل,Page,TypeScript,Active
 src/app/order-success/page.tsx,صفحة نجاح الطلب,Page,TypeScript,Active
-src/services/ksaRestaurantService.ts,خدمة مطاعم المملكة العربية السعودية,Service,TypeScript,Active
 src/data/restaurants.ts,بيانات المطاعم المحلية,Data,TypeScript,Active
 src/components/Header.tsx,مكون رأس الصفحة,Component,TypeScript,Active
 src/components/Footer.tsx,مكون تذييل الصفحة,Component,TypeScript,Active

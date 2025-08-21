@@ -26,6 +26,7 @@ export interface EstimateEntity {
   timestamp: Date;
   isCheapest: boolean;
   isFastest: boolean;
+  isSelected?: boolean;
   deepLinkUrl?: string;
 }
 

@@ -220,38 +220,7 @@ export default function HomePage() {
           )}
         </Box>
 
-        {/* KSA Restaurants Link */}
-        <Box sx={{ mb: 6, p: 4, bgcolor: 'primary.main', borderRadius: 3, color: 'white' }}>
-          <Grid container spacing={3} alignItems="center">
-            <Grid item xs={12} md={8}>
-              <Typography variant="h5" component="h2" gutterBottom>
-                {language === 'ar' ? 'مطاعم المملكة العربية السعودية' : 'Saudi Arabia Restaurants'}
-              </Typography>
-              <Typography variant="body1" paragraph>
-                {language === 'ar' 
-                  ? 'اكتشف مجموعة واسعة من المطاعم وقوائم الطعام من جميع أنحاء المملكة العربية السعودية من خلال موقع ksaRestaurantmenus.com'
-                  : 'Discover a wide range of restaurants and menus from across Saudi Arabia through ksaRestaurantmenus.com'
-                }
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
-              <Button
-                variant="contained"
-                size="large"
-                href="/ksa-restaurants"
-                sx={{
-                  bgcolor: 'white',
-                  color: 'primary.main',
-                  '&:hover': {
-                    bgcolor: 'grey.100',
-                  },
-                }}
-              >
-                {language === 'ar' ? 'استكشف المطاعم' : 'Explore Restaurants'}
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
+
       </Container>
 
       <Footer />

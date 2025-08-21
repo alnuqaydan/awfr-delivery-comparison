@@ -21,6 +21,7 @@ import {
   Select,
   MenuItem,
   Divider,
+  Rating,
 } from '@mui/material';
 import {
   LocationOn,

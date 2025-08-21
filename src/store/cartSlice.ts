@@ -149,4 +149,19 @@ export const selectCartItemCount = (state: { cart: CartState }) =>
   state.cart.items.reduce((total, item) => total + item.quantity, 0);
 export const selectCartLoading = (state: { cart: CartState }) => state.cart.loading;
 
+// Helper function to calculate cart totals
+export const calculateCartTotals = (items: CartItem[]) => {
+  const subtotal = items.reduce((total, item) => total + item.totalPrice, 0);
+  const deliveryFee = subtotal > 50 ? 0 : 10; // Free delivery over 50 SAR
+  const taxAmount = subtotal * 0.15; // 15% VAT
+  const totalAmount = subtotal + deliveryFee + taxAmount;
+  
+  return {
+    subtotal,
+    deliveryFee,
+    taxAmount,
+    totalAmount,
+  };
+};
+
 export default cartSlice.reducer;

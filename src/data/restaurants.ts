@@ -1,8 +1,61 @@
 import { Restaurant, RestaurantCategory, MenuItem } from '@/types';
-import { ENHANCED_RESTAURANT_CATEGORIES } from '@/services/ksaRestaurantService';
 
-// استخدام الفئات المحسنة من الخدمة الخارجية
-export const RESTAURANT_CATEGORIES: RestaurantCategory[] = ENHANCED_RESTAURANT_CATEGORIES;
+export const RESTAURANT_CATEGORIES: RestaurantCategory[] = [
+  {
+    id: 'fast-food',
+    name: 'Fast Food',
+    nameAr: 'وجبات سريعة',
+    icon: '🍔',
+    color: '#FF6B6B',
+    sortOrder: 1,
+    isActive: true,
+  },
+  {
+    id: 'arabic',
+    name: 'Arabic',
+    nameAr: 'مأكولات عربية',
+    icon: '🥙',
+    color: '#4ECDC4',
+    sortOrder: 2,
+    isActive: true,
+  },
+  {
+    id: 'asian',
+    name: 'Asian',
+    nameAr: 'مأكولات آسيوية',
+    icon: '🍜',
+    color: '#45B7D1',
+    sortOrder: 3,
+    isActive: true,
+  },
+  {
+    id: 'italian',
+    name: 'Italian',
+    nameAr: 'مأكولات إيطالية',
+    icon: '🍕',
+    color: '#96CEB4',
+    sortOrder: 4,
+    isActive: true,
+  },
+  {
+    id: 'desserts',
+    name: 'Desserts',
+    nameAr: 'حلويات',
+    icon: '🍰',
+    color: '#FFEAA7',
+    sortOrder: 5,
+    isActive: true,
+  },
+  {
+    id: 'beverages',
+    name: 'Beverages',
+    nameAr: 'مشروبات',
+    icon: '☕',
+    color: '#DDA0DD',
+    sortOrder: 6,
+    isActive: true,
+  },
+];
 
 export const RESTAURANTS: Restaurant[] = [
   {
@@ -368,6 +421,10 @@ export const getMenuItemsByRestaurant = (restaurantId: string): MenuItem[] => {
   return MENU_ITEMS.filter(item => item.restaurantId === restaurantId);
 };
 
+export const getMenuItemsByCategory = (categoryId: string): MenuItem[] => {
+  return MENU_ITEMS.filter(item => item.category.toLowerCase() === categoryId.toLowerCase());
+};
+
 export const searchRestaurants = (query: string): Restaurant[] => {
   const lowercaseQuery = query.toLowerCase();
   
@@ -381,87 +438,4 @@ export const searchRestaurants = (query: string): Restaurant[] => {
   );
 };
 
-// دمج البيانات المحلية مع البيانات الخارجية
-export const getCombinedRestaurants = async (): Promise<Restaurant[]> => {
-  try {
-    // في التطبيق الحقيقي، سيتم جلب البيانات من الخدمة الخارجية
-    // const externalRestaurants = await ksaRestaurantService.fetchAllRestaurants();
-    // return [...RESTAURANTS, ...externalRestaurants];
-    
-    // حالياً نستخدم البيانات المحلية فقط
-    return RESTAURANTS;
-  } catch (error) {
-    console.error('خطأ في دمج البيانات:', error);
-    return RESTAURANTS;
-  }
-};
 
-export const getCombinedRestaurantById = async (id: string): Promise<Restaurant | undefined> => {
-  try {
-    // البحث في البيانات المحلية أولاً
-    const localRestaurant = RESTAURANTS.find(restaurant => restaurant.id === id);
-    if (localRestaurant) {
-      return localRestaurant;
-    }
-
-    // إذا لم يتم العثور عليه، جرب الخدمة الخارجية
-    // const externalRestaurant = await ksaRestaurantService.fetchRestaurantById(id);
-    // return externalRestaurant;
-    
-    return undefined;
-  } catch (error) {
-    console.error('خطأ في جلب المطعم:', error);
-    return undefined;
-  }
-};
-
-export const getCombinedMenuItemsByRestaurant = async (restaurantId: string): Promise<MenuItem[]> => {
-  try {
-    // البحث في البيانات المحلية أولاً
-    const localMenuItems = MENU_ITEMS.filter(item => item.restaurantId === restaurantId);
-    if (localMenuItems.length > 0) {
-      return localMenuItems;
-    }
-
-    // إذا لم يتم العثور على قائمة طعام محلية، جرب الخدمة الخارجية
-    // const externalMenuItems = await ksaRestaurantService.fetchRestaurantMenu(restaurantId);
-    // return externalMenuItems;
-    
-    return [];
-  } catch (error) {
-    console.error('خطأ في جلب قائمة الطعام:', error);
-    return [];
-  }
-};
-
-export const searchCombinedRestaurants = async (query: string): Promise<Restaurant[]> => {
-  try {
-    // البحث في البيانات المحلية أولاً
-    const localResults = searchRestaurants(query);
-    
-    // في التطبيق الحقيقي، سيتم البحث في البيانات الخارجية أيضاً
-    // const externalResults = await ksaRestaurantService.searchRestaurants(query);
-    // return [...localResults, ...externalResults];
-    
-    return localResults;
-  } catch (error) {
-    console.error('خطأ في البحث:', error);
-    return searchRestaurants(query);
-  }
-};
-
-export const getCombinedRestaurantsByCategory = async (categoryId: string): Promise<Restaurant[]> => {
-  try {
-    // البحث في البيانات المحلية أولاً
-    const localResults = getRestaurantsByCategory(categoryId);
-    
-    // في التطبيق الحقيقي، سيتم البحث في البيانات الخارجية أيضاً
-    // const externalResults = await ksaRestaurantService.fetchRestaurantsByCategory(categoryId);
-    // return [...localResults, ...externalResults];
-    
-    return localResults;
-  } catch (error) {
-    console.error('خطأ في جلب المطاعم حسب الفئة:', error);
-    return getRestaurantsByCategory(categoryId);
-  }
-};

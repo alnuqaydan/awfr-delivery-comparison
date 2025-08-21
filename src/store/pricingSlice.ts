@@ -19,6 +19,30 @@ export const calculateDeliveryEstimates = createAsyncThunk(
   }
 );
 
+export const fetchDeliveryEstimates = createAsyncThunk(
+  'pricing/fetchDeliveryEstimates',
+  async ({
+    distance,
+    restaurantLocation,
+    userLocation,
+  }: {
+    distance: number;
+    restaurantLocation: { lat: number; lng: number };
+    userLocation: { lat: number; lng: number };
+  }) => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Calculate actual distance between points
+    const actualDistance = Math.sqrt(
+      Math.pow(restaurantLocation.lat - userLocation.lat, 2) +
+      Math.pow(restaurantLocation.lng - userLocation.lng, 2)
+    ) * 111; // Rough conversion to km
+    
+    return calculateEstimates(Math.max(distance, actualDistance));
+  }
+);
+
 const pricingSlice = createSlice({
   name: 'pricing',
   initialState,
@@ -31,6 +55,13 @@ const pricingSlice = createSlice({
     },
     clearError: (state) => {
       state.error = null;
+    },
+    selectDeliveryProvider: (state, action: PayloadAction<string>) => {
+      // Mark the selected provider in estimates
+      state.estimates = state.estimates.map(estimate => ({
+        ...estimate,
+        isSelected: estimate.providerId === action.payload,
+      }));
     },
   },
   extraReducers: (builder) => {
@@ -46,9 +77,21 @@ const pricingSlice = createSlice({
       .addCase(calculateDeliveryEstimates.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to calculate estimates';
+      })
+      .addCase(fetchDeliveryEstimates.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchDeliveryEstimates.fulfilled, (state, action) => {
+        state.loading = false;
+        state.estimates = action.payload;
+      })
+      .addCase(fetchDeliveryEstimates.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch delivery estimates';
       });
   },
 });
 
-export const { setDistance, setEstimates, clearError } = pricingSlice.actions;
+export const { setDistance, setEstimates, clearError, selectDeliveryProvider } = pricingSlice.actions;
 export default pricingSlice.reducer;

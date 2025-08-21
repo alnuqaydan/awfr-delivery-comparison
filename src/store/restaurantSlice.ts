@@ -45,7 +45,25 @@ export const fetchMenuItemsByCategory = createAsyncThunk(
   async ({ restaurantId, category }: { restaurantId: string; category: string }) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 200));
-    return getMenuItemsByCategory(restaurantId, category);
+    return getMenuItemsByCategory(category);
+  }
+);
+
+export const fetchRestaurantById = createAsyncThunk(
+  'restaurant/fetchById',
+  async (restaurantId: string) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return getRestaurantById(restaurantId);
+  }
+);
+
+export const fetchRestaurantMenu = createAsyncThunk(
+  'restaurant/fetchMenu',
+  async (restaurantId: string) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 400));
+    return getMenuItemsByRestaurant(restaurantId);
   }
 );
 
@@ -140,6 +158,30 @@ const restaurantSlice = createSlice({
       .addCase(fetchMenuItemsByCategory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch menu items';
+      })
+      .addCase(fetchRestaurantById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchRestaurantById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedRestaurant = action.payload || null;
+      })
+      .addCase(fetchRestaurantById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch restaurant by ID';
+      })
+      .addCase(fetchRestaurantMenu.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchRestaurantMenu.fulfilled, (state, action) => {
+        state.loading = false;
+        state.menuItems = action.payload;
+      })
+      .addCase(fetchRestaurantMenu.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch restaurant menu';
       });
   },
 });
