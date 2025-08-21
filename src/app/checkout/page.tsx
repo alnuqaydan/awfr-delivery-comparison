@@ -123,13 +123,18 @@ export default function CheckoutPage() {
   const handlePlaceOrder = async () => {
     if (!selectedRestaurant || !selectedProvider) return;
 
+    const selectedProviderInfo = estimates.find(e => e.providerId === selectedProvider);
+    if (!selectedProviderInfo) return;
+
     const orderData = {
       restaurantId: selectedRestaurant.id,
       items: cartItems,
       customerInfo,
-      deliveryAddress,
+      deliveryAddress: `${deliveryAddress.address}, ${deliveryAddress.city}`,
+      deliveryInstructions: deliveryAddress.instructions,
       paymentMethod,
       deliveryProvider: selectedProvider,
+      deliveryFee: selectedProviderInfo.totalPrice - subtotal,
       subtotal,
       totalAmount,
     };

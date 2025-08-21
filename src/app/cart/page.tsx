@@ -47,9 +47,8 @@ export default function CartPage() {
     (state) => state.cart
   );
 
-  useEffect(() => {
-    dispatch(calculateCartTotals());
-  }, [dispatch, cartItems]);
+  // Calculate cart totals whenever cart items change
+  const cartTotals = calculateCartTotals(cartItems);
 
   const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity === 0) {
@@ -253,7 +252,7 @@ export default function CartPage() {
                         {language === 'ar' ? 'المجموع الفرعي' : 'Subtotal'}
                       </Typography>
                       <Typography variant="body1">
-                        {subtotal} {language === 'ar' ? 'ريال' : 'SAR'}
+                        {cartTotals.subtotal} {language === 'ar' ? 'ريال' : 'SAR'}
                       </Typography>
                     </Box>
                     
@@ -262,7 +261,7 @@ export default function CartPage() {
                         {language === 'ar' ? 'رسوم التوصيل' : 'Delivery Fee'}
                       </Typography>
                       <Typography variant="body1">
-                        {deliveryFee} {language === 'ar' ? 'ريال' : 'SAR'}
+                        {cartTotals.deliveryFee} {language === 'ar' ? 'ريال' : 'SAR'}
                       </Typography>
                     </Box>
                     
@@ -273,7 +272,7 @@ export default function CartPage() {
                         {language === 'ar' ? 'المجموع الإجمالي' : 'Total'}
                       </Typography>
                       <Typography variant="h6" color="primary">
-                        {totalAmount} {language === 'ar' ? 'ريال' : 'SAR'}
+                        {cartTotals.totalAmount} {language === 'ar' ? 'ريال' : 'SAR'}
                       </Typography>
                     </Box>
                   </Box>

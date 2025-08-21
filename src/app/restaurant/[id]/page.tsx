@@ -84,7 +84,7 @@ export default function RestaurantPage() {
 
   useEffect(() => {
     if (menuItems.length > 0) {
-      const categories = [...new Set(menuItems.map((item) => item.category))];
+      const categories = Array.from(new Set(menuItems.map((item) => item.category)));
       setMenuCategories(categories);
     }
   }, [menuItems]);
@@ -106,13 +106,10 @@ export default function RestaurantPage() {
         })
       );
     } else {
-      const cartItem: CartItem = {
-        id: `${menuItem.id}-${Date.now()}`,
-        menuItem,
+      dispatch(addToCart({
+        item: menuItem,
         quantity: 1,
-        totalPrice: menuItem.price,
-      };
-      dispatch(addToCart(cartItem));
+      }));
     }
   };
 
