@@ -70,12 +70,12 @@ export const fetchRestaurantMenu = createAsyncThunk(
 // Add missing exports for explore page
 export const fetchRestaurantsByLocation = createAsyncThunk(
   'restaurant/fetchByLocation',
-  async (location: string) => {
+  async (location: { lat: number; lng: number; radius: number }) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 500));
-    return RESTAURANTS.filter(restaurant => 
-      restaurant.city.toLowerCase().includes(location.toLowerCase())
-    );
+    // For now, return all restaurants since we don't have real geolocation filtering
+    // In a real app, you would filter by distance from lat/lng coordinates
+    return RESTAURANTS;
   }
 );
 
