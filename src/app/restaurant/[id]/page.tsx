@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import {
   Container,
@@ -63,6 +63,7 @@ function TabPanel(props: TabPanelProps) {
 export default function RestaurantPage() {
   const { t } = useTranslation();
   const params = useParams();
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const { language } = useAppSelector((state) => state.settings);
   const { selectedRestaurant, menuItems, loading, error } = useAppSelector(
@@ -72,8 +73,15 @@ export default function RestaurantPage() {
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [menuCategories, setMenuCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
 
-  const restaurantId = params.id as string;
+  // استخراج المعاملات من URL
+  const restaurantSlug = params.id as string;
+  const restaurantId = searchParams.get('restaurant_id');
+  const userLat = searchParams.get('lat');
+  const userLng = searchParams.get('lng');
+  const menuCategory = searchParams.get('menu_category');
+  const dietaryRestrictions = searchParams.get('dietary');
 
   useEffect(() => {
     if (restaurantId) {
