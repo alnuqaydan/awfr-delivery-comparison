@@ -475,12 +475,12 @@ function DeliveryOptionsContent() {
                   
                                      {/* Badges */}
                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                     {option.badges?.map((badge) => {
+                     {option.badges && option.badges.length > 0 && option.badges.map((badge) => {
                        const icon = getBadgeIcon(badge);
                        return (
                          <Chip
                            key={badge}
-                           label={t.badges[badge]}
+                           label={t.badges[badge as keyof typeof t.badges] || badge}
                            size="small"
                            color={getBadgeColor(badge)}
                            icon={icon || undefined}
@@ -513,19 +513,19 @@ function DeliveryOptionsContent() {
                     <Typography variant="body2">{formatPrice(option.pricing.serviceFee)}</Typography>
                   </Box>
                   
-                  {option.pricing.smallOrderFee > 0 && (
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                      <Typography variant="body2" color="warning.main">{t.smallOrderFee}</Typography>
-                      <Typography variant="body2" color="warning.main">{formatPrice(option.pricing.smallOrderFee)}</Typography>
-                    </Box>
-                  )}
-                  
-                  {option.pricing.processingFee > 0 && (
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                      <Typography variant="body2">{t.processingFee}</Typography>
-                      <Typography variant="body2">{formatPrice(option.pricing.processingFee)}</Typography>
-                    </Box>
-                  )}
+                                     {(option.pricing.smallOrderFee || 0) > 0 && (
+                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                       <Typography variant="body2" color="warning.main">{t.smallOrderFee}</Typography>
+                       <Typography variant="body2" color="warning.main">{formatPrice(option.pricing.smallOrderFee || 0)}</Typography>
+                     </Box>
+                   )}
+                   
+                   {(option.pricing.processingFee || 0) > 0 && (
+                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                       <Typography variant="body2">{t.processingFee}</Typography>
+                       <Typography variant="body2">{formatPrice(option.pricing.processingFee || 0)}</Typography>
+                     </Box>
+                   )}
                   
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                     <Typography variant="body2">{t.taxAmount}</Typography>
@@ -583,18 +583,18 @@ function DeliveryOptionsContent() {
                   </Box>
                 </Box>
 
-                {/* Promo Code */}
-                {option.promoCode && (
-                  <Alert 
-                    severity="info" 
-                    icon={<LocalOffer />}
-                    sx={{ mb: 2 }}
-                  >
-                    <Typography variant="body2">
-                      {t.promoCode}: <strong>{option.promoCode}</strong>
-                    </Typography>
-                  </Alert>
-                )}
+                                 {/* Promo Code */}
+                 {option.promoCode && option.promoCode.length > 0 && (
+                   <Alert 
+                     severity="info" 
+                     icon={<LocalOffer />}
+                     sx={{ mb: 2 }}
+                   >
+                     <Typography variant="body2">
+                       {t.promoCode}: <strong>{option.promoCode}</strong>
+                     </Typography>
+                   </Alert>
+                 )}
 
                 {/* Order Button */}
                 <Button
@@ -659,13 +659,13 @@ function DeliveryOptionsContent() {
                           </Box>
                         </Box>
                         
-                        {option.availability.reason && (
-                          <Alert severity="warning" sx={{ mb: 2 }}>
-                            <Typography variant="body2">
-                              {option.availability.reason}
-                            </Typography>
-                          </Alert>
-                        )}
+                                                 {option.availability.reason && option.availability.reason.length > 0 && (
+                           <Alert severity="warning" sx={{ mb: 2 }}>
+                             <Typography variant="body2">
+                               {option.availability.reason}
+                             </Typography>
+                           </Alert>
+                         )}
                         
                         <Button variant="outlined" fullWidth disabled>
                           {t.unavailable}
