@@ -296,15 +296,14 @@ function ExploreContent() {
             {/* Sort By */}
             <FormControl fullWidth>
               <InputLabel>{t.sortBy}</InputLabel>
-              <Select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                label={t.sortBy}
-              >
-                <MenuItem value="rating">{t.rating}</MenuItem>
-                <MenuItem value="deliveryTime">{t.deliveryTime}</MenuItem>
-                <MenuItem value="distance">{t.distance}</MenuItem>
-                <MenuItem value="price">{t.price}</MenuItem>
+                             <Select
+                 value={sortBy}
+                 onChange={(e) => setSortBy(e.target.value as 'rating' | 'deliveryTime' | 'minimumOrder')}
+                 label={t.sortBy}
+               >
+                                 <MenuItem value="rating">{t.rating}</MenuItem>
+                 <MenuItem value="deliveryTime">{t.deliveryTime}</MenuItem>
+                 <MenuItem value="minimumOrder">{t.price}</MenuItem>
               </Select>
             </FormControl>
           </Paper>
