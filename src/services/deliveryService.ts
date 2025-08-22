@@ -235,7 +235,7 @@ export class DeliveryService {
         branding: {
           logo: provider.logo,
           primaryColor: provider.primaryColor,
-          accentColor: provider.primaryColor + '20',
+          accentColor: `${provider.primaryColor}20`,
         },
         pricing: {
           baseMealPrice: request.itemPrice,
