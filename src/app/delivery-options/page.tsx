@@ -380,8 +380,8 @@ function DeliveryOptionsContent() {
           <Chip 
             label={decodeURIComponent(itemName)} 
             variant="outlined" 
-            size="large"
-            sx={{ mb: 2 }}
+            size="medium"
+            sx={{ mb: 2, fontSize: '1rem', py: 1 }}
           />
         )}
       </Box>
