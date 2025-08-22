@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import Image from 'next/image';
 import {
   Container,
   Box,
@@ -21,6 +22,8 @@ import {
   Badge,
   Alert,
   CircularProgress,
+  TextField,
+  InputAdornment,
 } from '@mui/material';
 import {
   Star,
@@ -30,6 +33,8 @@ import {
   ShoppingCart,
   Add,
   Remove,
+  Search,
+  FilterList,
 } from '@mui/icons-material';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -63,6 +68,7 @@ function TabPanel(props: TabPanelProps) {
 export default function RestaurantPage() {
   const { t } = useTranslation();
   const params = useParams();
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { language } = useAppSelector((state) => state.settings);
   const { selectedRestaurant, menuItems, loading, error } = useAppSelector(
@@ -72,6 +78,8 @@ export default function RestaurantPage() {
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [menuCategories, setMenuCategories] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredMenuItems, setFilteredMenuItems] = useState<MenuItem[]>([]);
 
   const restaurantId = params.id as string;
 
@@ -86,8 +94,21 @@ export default function RestaurantPage() {
     if (menuItems.length > 0) {
       const categories = Array.from(new Set(menuItems.map((item) => item.category)));
       setMenuCategories(categories);
+      setFilteredMenuItems(menuItems);
     }
   }, [menuItems]);
+
+  useEffect(() => {
+    if (searchTerm) {
+      const filtered = menuItems.filter(item => 
+        (language === 'ar' ? item.nameAr : item.name).toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (language === 'ar' ? item.descriptionAr : item.description).toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredMenuItems(filtered);
+    } else {
+      setFilteredMenuItems(menuItems);
+    }
+  }, [searchTerm, menuItems, language]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
@@ -139,6 +160,14 @@ export default function RestaurantPage() {
 
   const getTotalCartItems = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const handleViewCart = () => {
+    router.push('/cart');
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
   if (loading) {
@@ -234,12 +263,12 @@ export default function RestaurantPage() {
               
               <Grid item xs={12} md={4}>
                 <Box sx={{ textAlign: 'center' }}>
-                  <img
+                  <Image
                     src={selectedRestaurant.logo}
                     alt="Restaurant Logo"
+                    width={120}
+                    height={120}
                     style={{
-                      width: '120px',
-                      height: '120px',
                       borderRadius: '50%',
                       objectFit: 'cover',
                       marginBottom: '16px',
@@ -254,93 +283,177 @@ export default function RestaurantPage() {
           </CardContent>
         </Card>
 
-        {/* Menu Tabs */}
+        {/* Search and Filter */}
         <Box sx={{ mb: 4 }}>
-          <Tabs
-            value={selectedTab}
-            onChange={handleTabChange}
-            variant="scrollable"
-            scrollButtons="auto"
+          <TextField
+            fullWidth
+            placeholder={language === 'ar' ? 'البحث في القائمة...' : 'Search menu...'}
+            value={searchTerm}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
             sx={{
-              '& .MuiTab-root': {
-                minWidth: 120,
-                textTransform: 'none',
-                fontWeight: 500,
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 3,
+                backgroundColor: 'background.paper',
               },
             }}
-          >
-            {menuCategories.map((category, index) => (
-              <Tab
-                key={category}
-                label={language === 'ar' ? category : category}
-                id={`menu-tab-${index}`}
-                aria-controls={`menu-tabpanel-${index}`}
-              />
-            ))}
-          </Tabs>
+          />
         </Box>
 
+        {/* Menu Tabs */}
+        {!searchTerm && (
+          <Box sx={{ mb: 4 }}>
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              variant="scrollable"
+              scrollButtons="auto"
+              sx={{
+                '& .MuiTab-root': {
+                  minWidth: 120,
+                  textTransform: 'none',
+                  fontWeight: 500,
+                },
+              }}
+            >
+              {menuCategories.map((category, index) => (
+                <Tab
+                  key={category}
+                  label={language === 'ar' ? category : category}
+                  id={`menu-tab-${index}`}
+                  aria-controls={`menu-tabpanel-${index}`}
+                />
+              ))}
+            </Tabs>
+          </Box>
+        )}
+
         {/* Menu Items */}
-        {menuCategories.map((category, index) => (
-          <TabPanel key={category} value={selectedTab} index={index}>
-            <Grid container spacing={3}>
-              {menuItems
-                .filter((item) => item.category === category)
-                .map((item) => (
-                  <Grid item xs={12} sm={6} md={4} key={item.id}>
-                    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                      <CardMedia
-                        component="img"
-                        height="200"
-                        image={item.image}
-                        alt={language === 'ar' ? item.nameAr : item.name}
-                      />
-                      <CardContent sx={{ flexGrow: 1, p: 2 }}>
-                        <Typography variant="h6" component="h3" gutterBottom>
-                          {language === 'ar' ? item.nameAr : item.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" paragraph>
-                          {language === 'ar' ? item.descriptionAr : item.description}
-                        </Typography>
-                        
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                          <Typography variant="h6" color="primary">
-                            {item.price} {language === 'ar' ? 'ريال' : 'SAR'}
-                          </Typography>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            {getItemQuantity(item.id) > 0 && (
-                              <>
-                                <IconButton
-                                  size="small"
-                                  onClick={() => handleUpdateQuantity(item, getItemQuantity(item.id) - 1)}
-                                >
-                                  <Remove />
-                                </IconButton>
-                                <Typography variant="body2" sx={{ minWidth: '20px', textAlign: 'center' }}>
-                                  {getItemQuantity(item.id)}
-                                </Typography>
-                              </>
-                            )}
+        {searchTerm ? (
+          // Show all filtered items when searching
+          <Grid container spacing={3}>
+            {filteredMenuItems.map((item) => (
+              <Grid item xs={12} sm={6} md={4} key={item.id}>
+                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={item.image}
+                    alt={language === 'ar' ? item.nameAr : item.name}
+                  />
+                  <CardContent sx={{ flexGrow: 1, p: 2 }}>
+                    <Typography variant="h6" component="h3" gutterBottom>
+                      {language === 'ar' ? item.nameAr : item.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" paragraph>
+                      {language === 'ar' ? item.descriptionAr : item.description}
+                    </Typography>
+                    
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+                      <Typography variant="h6" color="primary">
+                        {item.price} {language === 'ar' ? 'ريال' : 'SAR'}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        {getItemQuantity(item.id) > 0 && (
+                          <>
                             <IconButton
                               size="small"
-                              color="primary"
-                              onClick={() => handleAddToCart(item)}
+                              onClick={() => handleUpdateQuantity(item, getItemQuantity(item.id) - 1)}
                             >
-                              <Add />
+                              <Remove />
                             </IconButton>
-                          </Box>
-                        </Box>
-
-                        {item.isVegetarian && (
-                          <Chip label={language === 'ar' ? 'نباتي' : 'Vegetarian'} size="small" color="success" />
+                            <Typography variant="body2" sx={{ minWidth: '20px', textAlign: 'center' }}>
+                              {getItemQuantity(item.id)}
+                            </Typography>
+                          </>
                         )}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-            </Grid>
-          </TabPanel>
-        ))}
+                        <IconButton
+                          size="small"
+                          color="primary"
+                          onClick={() => handleAddToCart(item)}
+                        >
+                          <Add />
+                        </IconButton>
+                      </Box>
+                    </Box>
+
+                    {item.isVegetarian && (
+                      <Chip label={language === 'ar' ? 'نباتي' : 'Vegetarian'} size="small" color="success" />
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          // Show items by category when not searching
+          menuCategories.map((category, index) => (
+            <TabPanel key={category} value={selectedTab} index={index}>
+              <Grid container spacing={3}>
+                {filteredMenuItems
+                  .filter((item) => item.category === category)
+                  .map((item) => (
+                    <Grid item xs={12} sm={6} md={4} key={item.id}>
+                      <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                        <CardMedia
+                          component="img"
+                          height="200"
+                          image={item.image}
+                          alt={language === 'ar' ? item.nameAr : item.name}
+                        />
+                        <CardContent sx={{ flexGrow: 1, p: 2 }}>
+                          <Typography variant="h6" component="h3" gutterBottom>
+                            {language === 'ar' ? item.nameAr : item.name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary" paragraph>
+                            {language === 'ar' ? item.descriptionAr : item.description}
+                          </Typography>
+                          
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+                            <Typography variant="h6" color="primary">
+                              {item.price} {language === 'ar' ? 'ريال' : 'SAR'}
+                            </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              {getItemQuantity(item.id) > 0 && (
+                                <>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() => handleUpdateQuantity(item, getItemQuantity(item.id) - 1)}
+                                  >
+                                    <Remove />
+                                  </IconButton>
+                                  <Typography variant="body2" sx={{ minWidth: '20px', textAlign: 'center' }}>
+                                    {getItemQuantity(item.id)}
+                                  </Typography>
+                                </>
+                              )}
+                              <IconButton
+                                size="small"
+                                color="primary"
+                                onClick={() => handleAddToCart(item)}
+                              >
+                                <Add />
+                              </IconButton>
+                            </Box>
+                          </Box>
+
+                          {item.isVegetarian && (
+                            <Chip label={language === 'ar' ? 'نباتي' : 'Vegetarian'} size="small" color="success" />
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+              </Grid>
+            </TabPanel>
+          ))
+        )}
       </Container>
 
       {/* Floating Cart Button */}
@@ -358,6 +471,7 @@ export default function RestaurantPage() {
               variant="contained"
               size="large"
               startIcon={<ShoppingCart />}
+              onClick={handleViewCart}
               sx={{
                 borderRadius: '50px',
                 px: 3,

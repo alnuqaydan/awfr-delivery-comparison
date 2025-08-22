@@ -54,6 +54,10 @@ export interface Restaurant {
   city: string;
   isActive: boolean;
   isFeatured: boolean;
+  openingHours?: {
+    open: number;
+    close: number;
+  };
 }
 
 export interface RestaurantCategory {

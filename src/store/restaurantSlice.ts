@@ -67,6 +67,39 @@ export const fetchRestaurantMenu = createAsyncThunk(
   }
 );
 
+// Add missing exports for explore page
+export const fetchRestaurantsByLocation = createAsyncThunk(
+  'restaurant/fetchByLocation',
+  async (location: string) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return RESTAURANTS.filter(restaurant => 
+      restaurant.city.toLowerCase().includes(location.toLowerCase())
+    );
+  }
+);
+
+export const filterRestaurantsByCuisine = (cuisineType: string) => {
+  return RESTAURANTS.filter(restaurant => 
+    restaurant.cuisineType.toLowerCase() === cuisineType.toLowerCase()
+  );
+};
+
+export const filterRestaurantsByOpenStatus = (isOpen: boolean) => {
+  const currentHour = new Date().getHours();
+  return RESTAURANTS.filter(restaurant => {
+    if (!restaurant.openingHours) {
+      return true; // If no opening hours specified, consider it always open
+    }
+    
+    if (isOpen) {
+      return restaurant.openingHours.open <= currentHour && restaurant.openingHours.close > currentHour;
+    } else {
+      return restaurant.openingHours.open > currentHour || restaurant.openingHours.close <= currentHour;
+    }
+  });
+};
+
 const restaurantSlice = createSlice({
   name: 'restaurant',
   initialState,

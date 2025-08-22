@@ -118,14 +118,15 @@ npm run format
 Awfer/
 ├── src/
 │   ├── app/                    # صفحات Next.js
-│   │   ├── ksa-restaurants/    # صفحة مطاعم المملكة العربية السعودية
 │   │   ├── restaurant/         # صفحات المطاعم
-│   │   └── ...
+│   │   ├── cart/               # صفحة سلة التسوق
+│   │   ├── checkout/           # صفحة إتمام الطلب
+│   │   ├── delivery-comparison/ # صفحة مقارنة التوصيل
+│   │   └── order-success/      # صفحة نجاح الطلب
 │   ├── components/             # مكونات React
-│   ├── services/               # خدمات API
-│   │   └── ksaRestaurantService.ts  # خدمة مطاعم المملكة
 │   ├── store/                  # إدارة الحالة (Redux)
 │   ├── types/                  # تعريفات TypeScript
+│   ├── data/                   # البيانات المحلية
 │   └── utils/                  # أدوات مساعدة
 ├── public/                     # الملفات العامة
 └── tests/                      # ملفات الاختبار

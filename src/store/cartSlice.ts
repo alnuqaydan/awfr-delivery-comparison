@@ -149,11 +149,26 @@ export const selectCartItemCount = (state: { cart: CartState }) =>
   state.cart.items.reduce((total, item) => total + item.quantity, 0);
 export const selectCartLoading = (state: { cart: CartState }) => state.cart.loading;
 
-// Helper function to calculate cart totals
+// Enhanced pricing calculation with tax and delivery logic
 export const calculateCartTotals = (items: CartItem[]) => {
   const subtotal = items.reduce((total, item) => total + item.totalPrice, 0);
-  const deliveryFee = subtotal > 50 ? 0 : 10; // Free delivery over 50 SAR
-  const taxAmount = subtotal * 0.15; // 15% VAT
+  
+  // Calculate delivery fee based on subtotal
+  let deliveryFee = 0;
+  if (subtotal > 0) {
+    if (subtotal >= 100) {
+      deliveryFee = 0; // Free delivery for orders over 100 SAR
+    } else if (subtotal >= 50) {
+      deliveryFee = 5; // Reduced delivery fee for orders over 50 SAR
+    } else {
+      deliveryFee = 15; // Standard delivery fee
+    }
+  }
+  
+  // Calculate VAT (15% in Saudi Arabia)
+  const taxAmount = subtotal * 0.15;
+  
+  // Calculate total amount
   const totalAmount = subtotal + deliveryFee + taxAmount;
   
   return {
@@ -161,6 +176,40 @@ export const calculateCartTotals = (items: CartItem[]) => {
     deliveryFee,
     taxAmount,
     totalAmount,
+  };
+};
+
+// Calculate delivery fee based on distance and order value
+export const calculateDeliveryFee = (distance: number, subtotal: number) => {
+  let baseFee = 0;
+  
+  // Base fee based on distance
+  if (distance <= 5) {
+    baseFee = 10;
+  } else if (distance <= 10) {
+    baseFee = 15;
+  } else if (distance <= 15) {
+    baseFee = 20;
+  } else {
+    baseFee = 25;
+  }
+  
+  // Discount based on order value
+  if (subtotal >= 100) {
+    baseFee = 0; // Free delivery
+  } else if (subtotal >= 50) {
+    baseFee = Math.max(0, baseFee - 5); // 5 SAR discount
+  }
+  
+  return baseFee;
+};
+
+// Calculate minimum order requirements
+export const checkMinimumOrder = (subtotal: number, minimumOrder: number) => {
+  return {
+    isMet: subtotal >= minimumOrder,
+    remaining: Math.max(0, minimumOrder - subtotal),
+    percentage: Math.min(100, (subtotal / minimumOrder) * 100),
   };
 };
 

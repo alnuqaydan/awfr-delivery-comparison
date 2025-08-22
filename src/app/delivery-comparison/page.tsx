@@ -22,6 +22,14 @@ import {
   MenuItem,
   Divider,
   Rating,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
 } from '@mui/material';
 import {
   LocationOn,
@@ -31,13 +39,17 @@ import {
   CheckCircle,
   Star,
   CompareArrows,
+  OpenInNew,
+  Info,
+  Warning,
 } from '@mui/icons-material';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { DistanceSelector } from '@/components/DistanceSelector';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { fetchDeliveryEstimates, selectDeliveryProvider } from '@/store/pricingSlice';
-import { Provider, EstimateEntity } from '@/types';
+import { Provider, EstimateEntity, CartItem } from '@/types';
+import { getProviderById } from '@/utils/pricing';
 
 export default function DeliveryComparisonPage() {
   const { t } = useTranslation();
@@ -58,6 +70,8 @@ export default function DeliveryComparisonPage() {
     lat: number;
     lng: number;
   } | null>(null);
+  const [showRedirectDialog, setShowRedirectDialog] = useState(false);
+  const [redirectingProvider, setRedirectingProvider] = useState<Provider | null>(null);
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -107,8 +121,42 @@ export default function DeliveryComparisonPage() {
 
   const handleProceedToOrder = () => {
     if (selectedProvider) {
-      router.push('/checkout');
+      const provider = getProviderById(selectedProvider);
+      if (provider) {
+        setRedirectingProvider(provider);
+        setShowRedirectDialog(true);
+      }
     }
+  };
+
+  const handleRedirectToDeliveryApp = () => {
+    if (redirectingProvider && redirectingProvider.deepLinkUrl) {
+      // Prepare order data for the delivery app
+      const orderData = {
+        restaurant: selectedRestaurant,
+        items: cartItems,
+        subtotal,
+        deliveryFee: estimates.find(e => e.providerId === selectedProvider)?.totalPrice || 0,
+        totalAmount: totalAmount + (estimates.find(e => e.providerId === selectedProvider)?.totalPrice || 0),
+        userLocation,
+        provider: redirectingProvider,
+      };
+
+      // Store order data in localStorage for potential use
+      localStorage.setItem('pendingOrder', JSON.stringify(orderData));
+
+      // Redirect to delivery app
+      window.open(redirectingProvider.deepLinkUrl, '_blank');
+      
+      // Close dialog
+      setShowRedirectDialog(false);
+      setRedirectingProvider(null);
+    }
+  };
+
+  const handleCancelRedirect = () => {
+    setShowRedirectDialog(false);
+    setRedirectingProvider(null);
   };
 
   const getCheapestProvider = () => {
@@ -127,6 +175,12 @@ export default function DeliveryComparisonPage() {
 
   const cheapestProvider = getCheapestProvider();
   const fastestProvider = getFastestProvider();
+
+  const formatOrderItems = (items: CartItem[]) => {
+    return items.map(item => 
+      `${item.quantity}x ${language === 'ar' ? item.menuItem.nameAr : item.menuItem.name}`
+    ).join(', ');
+  };
 
   if (loading) {
     return (
@@ -303,7 +357,7 @@ export default function DeliveryComparisonPage() {
                           {language === 'ar' ? 'سعر التوصيل' : 'Delivery Fee'}
                         </Typography>
                         <Typography variant="h6" color="primary">
-                          {estimate.totalPrice} {language === 'ar' ? 'ريال' : 'SAR'}
+                          {estimate.totalPrice.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
                         </Typography>
                       </Box>
                       
@@ -321,7 +375,7 @@ export default function DeliveryComparisonPage() {
                           {language === 'ar' ? 'المسافة' : 'Distance'}
                         </Typography>
                         <Typography variant="body2">
-                          {estimate.distanceKm} {language === 'ar' ? 'كم' : 'km'}
+                          {estimate.distanceKm.toFixed(1)} {language === 'ar' ? 'كم' : 'km'}
                         </Typography>
                       </Box>
                     </Box>
@@ -376,7 +430,7 @@ export default function DeliveryComparisonPage() {
                         {language === 'ar' ? 'مجموع الطلب' : 'Order Total'}
                       </Typography>
                       <Typography variant="body1">
-                        {subtotal} {language === 'ar' ? 'ريال' : 'SAR'}
+                        {subtotal.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
                       </Typography>
                     </Box>
                     
@@ -385,7 +439,7 @@ export default function DeliveryComparisonPage() {
                         {language === 'ar' ? 'رسوم التوصيل' : 'Delivery Fee'}
                       </Typography>
                       <Typography variant="body1">
-                        {estimates.find(e => e.providerId === selectedProvider)?.totalPrice || 0} {language === 'ar' ? 'ريال' : 'SAR'}
+                        {estimates.find(e => e.providerId === selectedProvider)?.totalPrice.toFixed(2) || '0.00'} {language === 'ar' ? 'ريال' : 'SAR'}
                       </Typography>
                     </Box>
                     
@@ -418,6 +472,77 @@ export default function DeliveryComparisonPage() {
           </Card>
         )}
       </Container>
+
+      {/* Redirect Dialog */}
+      <Dialog
+        open={showRedirectDialog}
+        onClose={handleCancelRedirect}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <OpenInNew />
+            {language === 'ar' ? 'الانتقال إلى تطبيق التوصيل' : 'Redirect to Delivery App'}
+          </Box>
+        </DialogTitle>
+        <DialogContent>
+          {redirectingProvider && (
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Alert severity="info" icon={<Info />}>
+                {language === 'ar' 
+                  ? `سيتم نقلك إلى تطبيق ${redirectingProvider.nameAr} لإتمام الطلب`
+                  : `You will be redirected to ${redirectingProvider.name} app to complete your order`
+                }
+              </Alert>
+              
+              <Typography variant="h6" gutterBottom>
+                {language === 'ar' ? 'تفاصيل الطلب' : 'Order Details'}
+              </Typography>
+              
+              <List dense>
+                <ListItem>
+                  <ListItemText
+                    primary={language === 'ar' ? 'المطعم' : 'Restaurant'}
+                    secondary={language === 'ar' ? selectedRestaurant?.nameAr : selectedRestaurant?.name}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={language === 'ar' ? 'المنتجات' : 'Items'}
+                    secondary={formatOrderItems(cartItems)}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={language === 'ar' ? 'المجموع' : 'Total'}
+                    secondary={`${(subtotal + (estimates.find(e => e.providerId === selectedProvider)?.totalPrice || 0)).toFixed(2)} ${language === 'ar' ? 'ريال' : 'SAR'}`}
+                  />
+                </ListItem>
+              </List>
+              
+              <Alert severity="warning" icon={<Warning />}>
+                {language === 'ar' 
+                  ? 'سيتم فتح التطبيق في نافذة جديدة. تأكد من إكمال الطلب في التطبيق.'
+                  : 'The app will open in a new window. Please ensure you complete the order in the app.'
+                }
+              </Alert>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelRedirect}>
+            {language === 'ar' ? 'إلغاء' : 'Cancel'}
+          </Button>
+          <Button 
+            onClick={handleRedirectToDeliveryApp} 
+            variant="contained"
+            startIcon={<OpenInNew />}
+          >
+            {language === 'ar' ? 'فتح التطبيق' : 'Open App'}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Footer />
     </Box>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import {
@@ -18,6 +18,9 @@ import {
   Alert,
   CircularProgress,
   TextField,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from '@mui/material';
 import {
   Add,
@@ -26,6 +29,8 @@ import {
   ShoppingCart,
   ArrowBack,
   CompareArrows,
+  ExpandMore,
+  Receipt,
 } from '@mui/icons-material';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -46,6 +51,7 @@ export default function CartPage() {
   const { items: cartItems, subtotal, deliveryFee, totalAmount, loading } = useAppSelector(
     (state) => state.cart
   );
+  const { selectedRestaurant } = useAppSelector((state) => state.restaurant);
 
   // Calculate cart totals whenever cart items change
   const cartTotals = calculateCartTotals(cartItems);
@@ -67,7 +73,11 @@ export default function CartPage() {
   };
 
   const handleContinueShopping = () => {
-    router.back();
+    if (selectedRestaurant) {
+      router.push(`/restaurant/${selectedRestaurant.id}`);
+    } else {
+      router.push('/');
+    }
   };
 
   const handleProceedToDelivery = () => {
@@ -78,6 +88,11 @@ export default function CartPage() {
 
   const getTotalItems = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const getMinimumOrderMet = () => {
+    if (!selectedRestaurant) return true;
+    return cartTotals.subtotal >= selectedRestaurant.minimumOrder;
   };
 
   if (loading) {
@@ -252,7 +267,16 @@ export default function CartPage() {
                         {language === 'ar' ? 'المجموع الفرعي' : 'Subtotal'}
                       </Typography>
                       <Typography variant="body1">
-                        {cartTotals.subtotal} {language === 'ar' ? 'ريال' : 'SAR'}
+                        {cartTotals.subtotal.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
+                      </Typography>
+                    </Box>
+                    
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body1">
+                        {language === 'ar' ? 'الضريبة (15%)' : 'Tax (15%)'}
+                      </Typography>
+                      <Typography variant="body1">
+                        {cartTotals.taxAmount.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
                       </Typography>
                     </Box>
                     
@@ -261,7 +285,7 @@ export default function CartPage() {
                         {language === 'ar' ? 'رسوم التوصيل' : 'Delivery Fee'}
                       </Typography>
                       <Typography variant="body1">
-                        {cartTotals.deliveryFee} {language === 'ar' ? 'ريال' : 'SAR'}
+                        {cartTotals.deliveryFee.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
                       </Typography>
                     </Box>
                     
@@ -272,10 +296,20 @@ export default function CartPage() {
                         {language === 'ar' ? 'المجموع الإجمالي' : 'Total'}
                       </Typography>
                       <Typography variant="h6" color="primary">
-                        {cartTotals.totalAmount} {language === 'ar' ? 'ريال' : 'SAR'}
+                        {cartTotals.totalAmount.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
                       </Typography>
                     </Box>
                   </Box>
+
+                  {/* Minimum Order Warning */}
+                  {selectedRestaurant && !getMinimumOrderMet() && (
+                    <Alert severity="warning" sx={{ mb: 2 }}>
+                      {language === 'ar' 
+                        ? `الحد الأدنى للطلب: ${selectedRestaurant.minimumOrder} ريال`
+                        : `Minimum order: ${selectedRestaurant.minimumOrder} SAR`
+                      }
+                    </Alert>
+                  )}
 
                   <Button
                     variant="contained"
@@ -283,7 +317,7 @@ export default function CartPage() {
                     size="large"
                     startIcon={<CompareArrows />}
                     onClick={handleProceedToDelivery}
-                    disabled={cartItems.length === 0}
+                    disabled={cartItems.length === 0 || !getMinimumOrderMet()}
                     sx={{ mb: 2 }}
                   >
                     {language === 'ar' ? 'مقارنة خدمات التوصيل' : 'Compare Delivery Services'}
@@ -296,6 +330,57 @@ export default function CartPage() {
                     }
                   </Typography>
                 </CardContent>
+              </Card>
+
+              {/* Price Breakdown Accordion */}
+              <Card sx={{ mt: 2 }}>
+                <Accordion>
+                  <AccordionSummary expandIcon={<ExpandMore />}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Receipt />
+                      <Typography variant="body2">
+                        {language === 'ar' ? 'تفاصيل الأسعار' : 'Price Breakdown'}
+                      </Typography>
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" color="text.secondary">
+                          {language === 'ar' ? 'المجموع الفرعي' : 'Subtotal'}
+                        </Typography>
+                        <Typography variant="body2">
+                          {cartTotals.subtotal.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" color="text.secondary">
+                          {language === 'ar' ? 'الضريبة (15%)' : 'Tax (15%)'}
+                        </Typography>
+                        <Typography variant="body2">
+                          {cartTotals.taxAmount.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" color="text.secondary">
+                          {language === 'ar' ? 'رسوم التوصيل' : 'Delivery Fee'}
+                        </Typography>
+                        <Typography variant="body2">
+                          {cartTotals.deliveryFee.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
+                        </Typography>
+                      </Box>
+                      <Divider />
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" fontWeight="bold">
+                          {language === 'ar' ? 'المجموع الإجمالي' : 'Total'}
+                        </Typography>
+                        <Typography variant="body2" fontWeight="bold" color="primary">
+                          {cartTotals.totalAmount.toFixed(2)} {language === 'ar' ? 'ريال' : 'SAR'}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </AccordionDetails>
+                </Accordion>
               </Card>
             </Grid>
           </Grid>
