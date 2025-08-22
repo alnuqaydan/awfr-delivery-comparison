@@ -33,6 +33,7 @@ export interface EstimateEntity {
 // Restaurant Types
 export interface Restaurant {
   id: string;
+  slug: string;
   name: string;
   nameAr: string;
   description: string;
@@ -52,11 +53,21 @@ export interface Restaurant {
   };
   address: string;
   city: string;
+  priceRange: '$' | '$$' | '$$$' | '$$$$';
   isActive: boolean;
   isFeatured: boolean;
-  openingHours?: {
-    open: number;
-    close: number;
+  isOpen: boolean;
+  openingHours: {
+    [key: string]: { open: string; close: string; isClosed: boolean };
+  };
+  deliveryOptions: DeliveryOption[];
+  menuCategories: MenuCategory[];
+  dietaryOptions: {
+    vegetarian: boolean;
+    vegan: boolean;
+    glutenFree: boolean;
+    halal: boolean;
+    kosher: boolean;
   };
 }
 
@@ -179,9 +190,11 @@ export interface NotificationSettings {
 export interface PricingState {
   providers: Provider[];
   estimates: EstimateEntity[];
+  deliveryOptions: DeliveryOption[];
   selectedDistance: number;
   loading: boolean;
   error: string | null;
+  lastUpdate: Date | null;
 }
 
 export interface RestaurantState {
@@ -209,6 +222,14 @@ export interface OrderState {
   error: string | null;
 }
 
+export interface LocationState {
+  userLocation: LocationData | null;
+  detectionInProgress: boolean;
+  searchResults: LocationData[];
+  selectedLocation: LocationData | null;
+  error: string | null;
+}
+
 export interface SettingsState {
   language: 'ar' | 'en';
   theme: 'light' | 'dark' | 'system';
@@ -222,6 +243,73 @@ export interface AppState {
   cart: CartState;
   order: OrderState;
   settings: SettingsState;
+  location: LocationState;
+}
+
+// Location Detection Types
+export interface LocationData {
+  lat: number;
+  lng: number;
+  address: string;
+  city: string;
+  radius?: number;
+  isDetected: boolean;
+  timestamp: Date;
+}
+
+export interface DeliveryOption {
+  id: string;
+  companyName: string;
+  companyNameAr: string;
+  branding: {
+    logo: string;
+    primaryColor: string;
+    accentColor: string;
+  };
+  pricing: {
+    baseMealPrice: number;
+    deliveryFee: number;
+    serviceFee: number;
+    smallOrderFee?: number;
+    processingFee?: number;
+    taxAmount: number;
+    totalCost: number;
+  };
+  timing: {
+    estimatedMin: number;
+    estimatedMax: number;
+    currentTrafficFactor: number;
+  };
+  availability: {
+    isAvailable: boolean;
+    reason?: string;
+    nextAvailableTime?: Date;
+  };
+  rating: {
+    score: number;
+    totalReviews: number;
+    reliability: number;
+  };
+  features: {
+    liveTracking: boolean;
+    contactlessDelivery: boolean;
+    scheduledDelivery: boolean;
+    groupOrdering: boolean;
+  };
+  orderUrl: string;
+  promoCode?: string;
+  badges?: ('fastest' | 'cheapest' | 'best-rated' | 'recommended')[];
+}
+
+export interface MenuCategory {
+  id: string;
+  name: string;
+  nameAr: string;
+  description?: string;
+  descriptionAr?: string;
+  icon: string;
+  sortOrder: number;
+  isActive: boolean;
 }
 
 // Utility Types
