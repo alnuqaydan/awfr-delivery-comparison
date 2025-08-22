@@ -68,11 +68,8 @@ function TabPanel(props: TabPanelProps) {
 export default function RestaurantPage() {
   const { t } = useTranslation();
   const params = useParams();
-<<<<<<< HEAD
   const router = useRouter();
-=======
   const searchParams = useSearchParams();
->>>>>>> 78f6d2765e0e01e5ff6ff672da2cc95da708af83
   const dispatch = useAppDispatch();
   const { language } = useAppSelector((state) => state.settings);
   const { selectedRestaurant, menuItems, loading, error } = useAppSelector(
@@ -82,12 +79,9 @@ export default function RestaurantPage() {
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [menuCategories, setMenuCategories] = useState<string[]>([]);
-<<<<<<< HEAD
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredMenuItems, setFilteredMenuItems] = useState<MenuItem[]>([]);
-=======
   const [selectedCategory, setSelectedCategory] = useState<string>('');
->>>>>>> 78f6d2765e0e01e5ff6ff672da2cc95da708af83
 
   // استخراج المعاملات من URL
   const restaurantSlug = params.id as string;
