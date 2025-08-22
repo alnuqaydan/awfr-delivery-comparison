@@ -27,7 +27,7 @@ import {
   Insights,
   ExpandMore,
   ExpandLess,
-  QuickReply,
+  Quickreply,
   CompareArrows,
 } from '@mui/icons-material';
 import { DeliveryOption } from '@/types';
@@ -235,7 +235,7 @@ const QuickDecisionHelper: React.FC<QuickDecisionHelperProps> = ({
             boxShadow: 4,
           }}
         >
-          <QuickReply sx={{ mr: 1 }} />
+                            <Quickreply sx={{ mr: 1 }} />
           {t.quickDecision}
           {countdown > 0 && (
             <Chip
