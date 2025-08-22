@@ -44,7 +44,7 @@ function ExploreContent() {
 
   const [selectedCuisine, setSelectedCuisine] = useState<string>('all');
   const [showOpenOnly, setShowOpenOnly] = useState<boolean>(false);
-  const [sortBy, setSortBy] = useState<string>('rating');
+  const [sortBy, setSortBy] = useState<'rating' | 'deliveryTime' | 'minimumOrder'>('rating');
 
   // استخراج المعاملات من URL
   const lat = searchParams.get('lat');
