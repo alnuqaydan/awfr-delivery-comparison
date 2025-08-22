@@ -473,18 +473,21 @@ function DeliveryOptionsContent() {
                     </Box>
                   </Box>
                   
-                  {/* Badges */}
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                    {option.badges?.map((badge) => (
-                      <Chip
-                        key={badge}
-                        label={t.badges[badge]}
-                        size="small"
-                        color={getBadgeColor(badge)}
-                        icon={getBadgeIcon(badge)}
-                      />
-                    ))}
-                  </Box>
+                                     {/* Badges */}
+                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                     {option.badges?.map((badge) => {
+                       const icon = getBadgeIcon(badge);
+                       return (
+                         <Chip
+                           key={badge}
+                           label={t.badges[badge]}
+                           size="small"
+                           color={getBadgeColor(badge)}
+                           icon={icon || undefined}
+                         />
+                       );
+                     })}
+                   </Box>
                 </Box>
 
                 <Divider sx={{ my: 2 }} />
